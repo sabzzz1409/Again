@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    "*.*": true,
+    "node_modules": true,
+    "public": true,
+    "src/*.*": true,
+    "src/*/*.*": true,
+    "src/environments": true,
+    "src/app/layouts": true,
+    "src/app/utils": true,
+    "**/*.spec.ts": true
+  }
+}

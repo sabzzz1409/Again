@@ -1,0 +1,20 @@
+INITIALIZATION:
+ng new              create
+ng b                build
+ng s                serve
+ng t                test
+CONFIGURATION:  
+ng add              In angular.json
+ng g environments   In main.ts
+ng g interceptor    In app.config.ts
+ng g g              In app.routes.ts
+CONSTRUCTION:  
+ng g c              HTML + SCSS + TS                                                  
+ng g d              TS for tags in HTML                                                 
+ng g p              TS for content in HTML
+ng g s              TS for TS
+ORCHESTRATION:
+ng g m              For club
+ng g r              For preload
+ng g service-worker For offline  
+ng g web-worker     For lag
