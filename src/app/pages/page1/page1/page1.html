@@ -1,1 +1,22 @@
 <p>page1 works!</p>
+<div class="main_table">
+  <form [formGroup]="pageForm">
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Main Modules</th>
+          <th>Sub Modules</th>
+          <th>Elements</th>
+          <th>Fields</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of tableRows; track $index) {
+          <tr></tr>
+        }
+      </tbody>
+    </table>
+  </form>
+</div>
