@@ -1,79 +1,83 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Api } from '../../../shared/services/api';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-page1',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './page1.html',
   styleUrl: './page1.scss',
 })
 export class Page1 {
-  private fb = inject(FormBuilder);
-  // private srv = inject(Api);
+  public pageForm!: FormGroup;
 
-  public pageForm = this.fb.group({});
-  public tableRows = [
+  public tableRows: any = [
     {
       displayName: 'test 1',
       type: 'main',
-      elements: [
+      submodules: [
         {
-          type: 'form',
-          fields: [
+          displayName: 'stest 1',
+          elements: [
             {
-              label: 'Text Data',
-              key: 'textData',
-            },
-            {
-              label: 'Number Data',
-              key: 'numData',
-            },
-          ],
-        },
-        {
-          type: 'cards',
-          fields: [
-            {
-              label: 'Total',
-              key: 'total',
-              actions: [
+              type: 'form',
+              fields: [
                 {
-                  act: 'click',
+                  label: 'Text Data',
+                  key: 'textData',
                 },
                 {
-                  act: 'drag',
+                  label: 'Number Data',
+                  key: 'numData',
                 },
               ],
             },
             {
-              label: 'Today',
-              key: 'today',
-              actions: [
+              type: 'cards',
+              fields: [
                 {
-                  act: 'click',
+                  label: 'Total',
+                  key: 'total',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
                 },
                 {
-                  act: 'drag',
+                  label: 'Today',
+                  key: 'today',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
                 },
               ],
             },
-          ],
-        },
-        {
-          type: 'table',
-          fields: [
             {
-              label: 'S.No',
-              key: '$index',
-            },
-            {
-              label: 'Text Data',
-              key: 'textData',
-            },
-            {
-              label: 'Number Data',
-              key: 'numData',
+              type: 'table',
+              fields: [
+                {
+                  label: 'S.No',
+                  key: '$index',
+                },
+                {
+                  label: 'Text Data',
+                  key: 'textData',
+                },
+                {
+                  label: 'Number Data',
+                  key: 'numData',
+                },
+              ],
             },
           ],
         },
@@ -81,68 +85,155 @@ export class Page1 {
     },
     {
       displayName: 'test 2',
-      type: 'main',
-      elements: [
+      type: 'sub',
+      submodules: [
         {
-          type: 'form',
-          fields: [
+          displayName: 'test 2.1',
+          elements: [
             {
-              label: 'Text Data',
-              key: 'textData',
-            },
-            {
-              label: 'Number Data',
-              key: 'numData',
-            },
-          ],
-        },
-        {
-          type: 'cards',
-          fields: [
-            {
-              label: 'Total',
-              key: 'total',
-              actions: [
+              type: 'form',
+              fields: [
                 {
-                  act: 'click',
+                  label: 'Text Data',
+                  key: 'textData',
                 },
                 {
-                  act: 'drag',
+                  label: 'Number Data',
+                  key: 'numData',
                 },
               ],
             },
             {
-              label: 'Today',
-              key: 'today',
-              actions: [
+              type: 'cards',
+              fields: [
                 {
-                  act: 'click',
+                  label: 'Total',
+                  key: 'total',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
                 },
                 {
-                  act: 'drag',
+                  label: 'Today',
+                  key: 'today',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'table',
+              fields: [
+                {
+                  label: 'S.No',
+                  key: '$index',
+                },
+                {
+                  label: 'Text Data',
+                  key: 'textData',
+                },
+                {
+                  label: 'Number Data',
+                  key: 'numData',
                 },
               ],
             },
           ],
         },
         {
-          type: 'table',
-          fields: [
+          displayName: 'test 2.2',
+          elements: [
             {
-              label: 'S.No',
-              key: '$index',
+              type: 'form',
+              fields: [
+                {
+                  label: 'Text Data',
+                  key: 'textData',
+                },
+                {
+                  label: 'Number Data',
+                  key: 'numData',
+                },
+              ],
             },
             {
-              label: 'Text Data',
-              key: 'textData',
+              type: 'cards',
+              fields: [
+                {
+                  label: 'Total',
+                  key: 'total',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
+                },
+                {
+                  label: 'Today',
+                  key: 'today',
+                  actions: [
+                    {
+                      act: 'click',
+                    },
+                    {
+                      act: 'drag',
+                    },
+                  ],
+                },
+              ],
             },
             {
-              label: 'Number Data',
-              key: 'numData',
+              type: 'table',
+              fields: [
+                {
+                  label: 'S.No',
+                  key: '$index',
+                },
+                {
+                  label: 'Text Data',
+                  key: 'textData',
+                },
+                {
+                  label: 'Number Data',
+                  key: 'numData',
+                },
+              ],
             },
           ],
         },
       ],
     },
   ];
+
+  constructor(private fb: FormBuilder) {
+    this.pageForm = this.fb.group({});
+
+    this.tableRows.forEach((piece: any) => {
+      piece.submodules.forEach((part: any) => {
+        part.elements.forEach((pack: any) => {
+          pack.fields.forEach((parcel: any) => {
+            parcel.rowspan = parcel?.actions?.length || 1;
+          });
+          pack.rowspan = pack.fields.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+        });
+        part.rowspan = part.elements.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+      });
+      piece.rowspan = piece.submodules.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+      console.log(piece);
+    });
+  }
 }

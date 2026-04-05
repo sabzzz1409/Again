@@ -1,22 +1,88 @@
 <p>page1 works!</p>
 <div class="main_table">
-  <form [formGroup]="pageForm">
-    <table>
-      <thead>
+  <table>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Main Modules</th>
+        <th>Sub Modules</th>
+        <th>Elements</th>
+        <th>Fields</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (mod of tableRows; track $index) {
         <tr>
-          <th>S.No</th>
-          <th>Main Modules</th>
-          <th>Sub Modules</th>
-          <th>Elements</th>
-          <th>Fields</th>
-          <th>Actions</th>
+          <td [attr.rowspan]="mod.rowspan">{{ $index + 1 }}</td>
+          <td [attr.rowspan]="mod.rowspan" [attr.colspan]="mod.submodules.length - 1 ? 1 : 2">
+            {{ mod.displayName }}
+          </td>
+          @if (mod.submodules.length - 1) {
+            <td [attr.rowspan]="mod.submodules[0].rowspan">{{ mod.submodules[0].displayName }}</td>
+          }
+          <td [attr.rowspan]="mod.submodules[0].elements[0].rowspan">
+            {{ mod.submodules[0].elements[0].type }}
+          </td>
+          <td [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan">
+            {{ mod.submodules[0].elements[0].fields[0].label }}
+          </td>
+          <td>
+            {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        @for (row of tableRows; track $index) {
-          <tr></tr>
+
+        @for (sub of mod.submodules; track $index) {
+          @if (!$first) {
+            <tr>
+              <td [attr.rowspan]="sub.rowspan">
+                {{ sub.displayName }}
+              </td>
+              <td [attr.rowspan]="sub.elements[0].rowspan">{{ sub.elements[0].type }}</td>
+              <td [attr.rowspan]="sub.elements[0].fields[0].rowspan">
+                {{ sub.elements[0].fields[0].label }}
+              </td>
+              <td [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1">
+                {{ sub.elements[0].fields[0]?.actions?.[0]?.act || '-' }}
+              </td>
+            </tr>
+          }
+          @for (elem of sub.elements; track $index) {
+            @if (!$first) {
+              <tr>
+                <td [attr.rowspan]="elem.rowspan">
+                  {{ elem.type }}
+                </td>
+                <td [attr.rowspan]="elem.fields[0].rowspan">{{ elem.fields[0].label }}</td>
+                <td [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1">
+                  {{ elem.fields[0]?.actions?.[0]?.act || '-' }}
+                </td>
+              </tr>
+            }
+            @for (field of elem.fields; track $index) {
+              @if (!$first) {
+                <tr>
+                  <td [attr.rowspan]="field.rowspan">
+                    {{ field.label }}
+                  </td>
+                  <td [attr.rowspan]="field?.actions?.[0]?.act || 1">
+                    {{ field?.actions?.[0]?.act || '--' }}
+                  </td>
+                </tr>
+              }
+              @for (act of field.actions; track $index) {
+                @if (!$first) {
+                  <tr>
+                    <td>
+                      {{ act?.act || '---' }}
+                    </td>
+                  </tr>
+                }
+              }
+            }
+          }
         }
-      </tbody>
-    </table>
-  </form>
+      }
+    </tbody>
+  </table>
 </div>
