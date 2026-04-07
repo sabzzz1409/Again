@@ -4,7 +4,10 @@
     <thead>
       <tr>
         <th>S.No</th>
-        <th>Main Modules</th>
+        <th>
+          Main Modules
+          <button (click)="addItem(tableRows.length - 1)">+</button>
+        </th>
         <th>Sub Modules</th>
         <th>Elements</th>
         <th>Fields</th>
@@ -14,7 +17,7 @@
     <tbody>
       @for (mod of tableRows; track $index; let i = $index) {
         <tr>
-          <td [attr.rowspan]="mod.rowspan">
+          <td [attr.rowspan]="mod.rowspan" style="text-align: center">
             {{ $index + 1 }}
           </td>
           <td [attr.rowspan]="mod.rowspan" [attr.colspan]="mod.submodules.length - 1 ? 1 : 2">
@@ -22,12 +25,15 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span (click)="editAction(i)">
+                <span style="min-width: 20px" (click)="editAction(i)">
                   {{ mod.displayName }}
                 </span>
                 <span>
                   <button (click)="addItem(i)">+</button>
-                  <button>x</button>
+                  @if (!(mod.submodules.length - 1)) {
+                    <button (click)="addItem(i, 0)">-</button>
+                  }
+                  <button (click)="remove(i)">x</button>
                 </span>
               </div>
             }
@@ -45,12 +51,12 @@
                 <div
                   style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                 >
-                  <span (click)="editAction(i, 0)">
+                  <span style="min-width: 20px" (click)="editAction(i, 0)">
                     {{ mod.submodules[0].displayName }}
                   </span>
                   <span>
                     <button (click)="addItem(i, 0)">+</button>
-                    <button>x</button>
+                    <button (click)="remove(i, 0)">x</button>
                   </span>
                 </div>
               }
@@ -61,12 +67,12 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span (click)="editAction(i, 0, 0)">
+                <span style="min-width: 20px" (click)="editAction(i, 0, 0)">
                   {{ mod.submodules[0].elements[0].type }}
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0)">+</button>
-                  <button>x</button>
+                  <button (click)="remove(i, 0, 0)">x</button>
                 </span>
               </div>
             }
@@ -76,12 +82,12 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span (click)="editAction(i, 0, 0, 0)">
+                <span style="min-width: 20px" (click)="editAction(i, 0, 0, 0)">
                   {{ mod.submodules[0].elements[0].fields[0].label }}
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0, 0)">+</button>
-                  <button>x</button>
+                  <button (click)="remove(i, 0, 0, 0)">x</button>
                 </span>
               </div>
             }
@@ -91,12 +97,12 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span (click)="editAction(i, 0, 0, 0, 0)">
+                <span style="min-width: 20px" (click)="editAction(i, 0, 0, 0, 0)">
                   {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0, 0, 0)">+</button>
-                  <button>x</button>
+                  <button (click)="remove(i, 0, 0, 0, 0)">x</button>
                 </span>
               </div>
             }
@@ -118,12 +124,12 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span (click)="editAction(i, j)">
+                    <span style="min-width: 20px" (click)="editAction(i, j)">
                       {{ sub.displayName }}
                     </span>
                     <span>
                       <button (click)="addItem(i, j)">+</button>
-                      <button>x</button>
+                      <button (click)="remove(i, j)">x</button>
                     </span>
                   </div>
                 }
@@ -140,12 +146,12 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span (click)="editAction(i, j, 0)">
+                    <span style="min-width: 20px" (click)="editAction(i, j, 0)">
                       {{ sub.elements[0].type }}
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0)">+</button>
-                      <button>x</button>
+                      <button (click)="remove(i, j, 0)">x</button>
                     </span>
                   </div>
                 }
@@ -162,12 +168,12 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span (click)="editAction(i, j, 0, 0)">
+                    <span style="min-width: 20px" (click)="editAction(i, j, 0, 0)">
                       {{ sub.elements[0].fields[0].label }}
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0, 0)">+</button>
-                      <button>x</button>
+                      <button (click)="remove(i, j, 0, 0)">x</button>
                     </span>
                   </div>
                 }
@@ -184,12 +190,12 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span (click)="editAction(i, j, 0, 0, 0)">
+                    <span style="min-width: 20px" (click)="editAction(i, j, 0, 0, 0)">
                       {{ sub.elements[0].fields[0]?.actions?.[0]?.act || '-' }}
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0, 0, 0)">+</button>
-                      <button>x</button>
+                      <button (click)="remove(i, j, 0, 0, 0)">x</button>
                     </span>
                   </div>
                 }
@@ -216,12 +222,12 @@
                         margin: auto;
                       "
                     >
-                      <span (click)="editAction(i, j, k)">
+                      <span style="min-width: 20px" (click)="editAction(i, j, k)">
                         {{ elem.type }}
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k)">+</button>
-                        <button>x</button>
+                        <button (click)="remove(i, j, k)">x</button>
                       </span>
                     </div>
                   }
@@ -243,12 +249,12 @@
                         margin: auto;
                       "
                     >
-                      <span (click)="editAction(i, j, k, 0)">
+                      <span style="min-width: 20px" (click)="editAction(i, j, k, 0)">
                         {{ elem.fields[0].label }}
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k, 0)">+</button>
-                        <button>x</button>
+                        <button (click)="remove(i, j, k, 0)">x</button>
                       </span>
                     </div>
                   }
@@ -270,12 +276,12 @@
                         margin: auto;
                       "
                     >
-                      <span (click)="editAction(i, j, k, 0, 0)">
+                      <span style="min-width: 20px" (click)="editAction(i, j, k, 0, 0)">
                         {{ elem.fields[0]?.actions?.[0]?.act || '-' }}
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k, 0, 0)">+</button>
-                        <button>x</button>
+                        <button (click)="remove(i, j, k, 0, 0)">x</button>
                       </span>
                     </div>
                   }
@@ -302,12 +308,12 @@
                           margin: auto;
                         "
                       >
-                        <span (click)="editAction(i, j, k, l)">
+                        <span style="min-width: 20px" (click)="editAction(i, j, k, l)">
                           {{ field.label }}
                         </span>
                         <span>
                           <button (click)="addItem(i, j, k, l)">+</button>
-                          <button>x</button>
+                          <button (click)="remove(i, j, k, l)">x</button>
                         </span>
                       </div>
                     }
@@ -329,12 +335,12 @@
                           margin: auto;
                         "
                       >
-                        <span (click)="editAction(i, j, k, l, 0)">
+                        <span style="min-width: 20px" (click)="editAction(i, j, k, l, 0)">
                           {{ field?.actions?.[0]?.act || '--' }}
                         </span>
                         <span>
                           <button (click)="addItem(i, j, k, l, 0)">+</button>
-                          <button>x</button>
+                          <button (click)="remove(i, j, k, l, 0)">x</button>
                         </span>
                       </div>
                     }
@@ -361,12 +367,12 @@
                             margin: auto;
                           "
                         >
-                          <span (click)="editAction(i, j, k, l, m)">
+                          <span style="min-width: 20px" (click)="editAction(i, j, k, l, m)">
                             {{ act?.act || '---' }}
                           </span>
                           <span>
                             <button (click)="addItem(i, j, k, l, m)">+</button>
-                            <button>x</button>
+                            <button (click)="remove(i, j, k, l, m)">x</button>
                           </span>
                         </div>
                       }

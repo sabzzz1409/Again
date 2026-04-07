@@ -233,7 +233,7 @@ export class Page1 {
     },
   ];
 
-  private selectedData: any;
+  private selectedData: any = {};
   public editData: any;
   private prevKey: any;
 
@@ -330,15 +330,15 @@ export class Page1 {
     this.setTable();
 
     console.log(i, j, k, l, m);
-    const module = i > -1 ? this.tableRows[i] : null;
+    const module = i > -1 ? this.tableRows[i] || {} : null;
     const submodule = j > -1 ? module.submodules[j] : null;
     const element = k > -1 ? submodule.elements[k] : null;
     const field = l > -1 ? element.fields[l] : null;
     const action = m > -1 ? field.actions[m] : null;
 
     if (action) {
-      field.actions.push({
-        act: 't',
+      field.actions.splice(m + 1, 0, {
+        act: '',
         edit: true,
       });
       this.selectedData = action;
@@ -346,7 +346,7 @@ export class Page1 {
       key = 'act';
     } else {
       if (field) {
-        element.fields.push({
+        element.fields.splice(l + 1, 0, {
           label: '',
           edit: true,
           actions: [{}],
@@ -356,18 +356,13 @@ export class Page1 {
         key = 'label';
       } else {
         if (element) {
-          submodule.elements.push({
+          submodule.elements.splice(k + 1, 0, {
             edit: true,
             type: '',
-            elements: [
+            fields: [
               {
                 type: '',
-                fields: [
-                  {
-                    type: '',
-                    actions: [{}],
-                  },
-                ],
+                actions: [{}],
               },
             ],
           });
@@ -376,21 +371,16 @@ export class Page1 {
           key = 'type';
         } else {
           if (submodule) {
-            module.submodules.push({
+            module.submodules.splice(j + 1, 0, {
               edit: true,
               displayName: '',
               elements: [
                 {
                   type: '',
-                  elements: [
+                  fields: [
                     {
                       type: '',
-                      fields: [
-                        {
-                          type: '',
-                          actions: [{}],
-                        },
-                      ],
+                      actions: [{}],
                     },
                   ],
                 },
@@ -401,7 +391,7 @@ export class Page1 {
             key = 'displayName';
           } else {
             if (module) {
-              this.tableRows.push({
+              this.tableRows.splice(i + 1, 0, {
                 displayName: '',
                 edit: true,
                 submodules: [
@@ -410,15 +400,10 @@ export class Page1 {
                     elements: [
                       {
                         type: '',
-                        elements: [
+                        fields: [
                           {
                             type: '',
-                            fields: [
-                              {
-                                type: '',
-                                actions: [{}],
-                              },
-                            ],
+                            actions: [{}],
                           },
                         ],
                       },
@@ -447,6 +432,47 @@ export class Page1 {
 
     this.prevKey = key;
     this.setTable();
+
+    if (action) {
+      field.actions.at(-1).edit = true;
+      this.selectedData = action;
+      this.editData = action?.act;
+      key = 'act';
+    } else {
+      if (field) {
+        element.fields.at(-1).edit = true;
+        this.selectedData = field;
+        this.editData = field.label;
+        key = 'label';
+      } else {
+        if (element) {
+          submodule.elements.at(-1).edit = true;
+          this.selectedData = element;
+          this.editData = element.type;
+          key = 'type';
+        } else {
+          if (submodule) {
+            module.submodules.at(-1).edit = true;
+            this.selectedData = submodule;
+            this.editData = submodule.displayName;
+            key = 'displayName';
+          } else {
+            if (module) {
+              this.tableRows.at(-1).edit = true;
+              this.selectedData = module;
+              this.editData = module.displayName;
+              key = 'displayName';
+            } else {
+              this.setTable();
+              this.selectedData[this.prevKey] = this.editData;
+              this.selectedData = null;
+              this.editData = null;
+              key = null;
+            }
+          }
+        }
+      }
+    }
     console.log(this.tableRows);
   }
 
@@ -454,5 +480,40 @@ export class Page1 {
     if (ev.key == 'Enter') {
       this.editAction();
     }
+  }
+
+  remove(i = -1, j = -1, k = -1, l = -1, m = -1) {
+    let key;
+
+    this.setTable();
+
+    console.log(i, j, k, l, m);
+    const module = i > -1 ? this.tableRows[i] : null;
+    const submodule = j > -1 ? module.submodules[j] : null;
+    const element = k > -1 ? submodule.elements[k] : null;
+    const field = l > -1 ? element.fields[l] : null;
+    const action = m > -1 ? field.actions[m] : null;
+
+    if (action && field.actions.length - 1) {
+      field.actions.splice(m, 1);
+    } else {
+      if (field && element.fields.length - 1) {
+        element.fields.splice(l, 1);
+      } else {
+        if (element && submodule.elements.length - 1) {
+          submodule.elements.splice(k, 1);
+        } else {
+          if (submodule && module.submodules.length - 1) {
+            module.submodules.splice(j, 1);
+          } else {
+            if (module && this.tableRows.length - 1) {
+              this.tableRows.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+
+    this.setTable();
   }
 }
