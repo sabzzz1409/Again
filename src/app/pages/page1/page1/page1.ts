@@ -232,104 +232,22 @@ export class Page1 {
       ],
     },
   ];
+  public editData: any;
 
   private selectedData: any = {};
-  public editData: any;
   private prevKey: any;
 
   constructor() {
     this.setTable();
   }
 
-  private setTable() {
-    this.tableRows.forEach((piece: any) => {
-      piece.submodules.forEach((part: any) => {
-        part.elements.forEach((pack: any) => {
-          pack.fields.forEach((parcel: any) => {
-            parcel?.actions?.forEach((perk: any) => {
-              perk.edit = false;
-            });
-            parcel.rowspan = parcel?.actions?.length || 1;
-            parcel.edit = false;
-          });
-          pack.rowspan = pack.fields.reduce((acc: any, item: any) => acc + item.rowspan, 0);
-          pack.edit = false;
-        });
-        part.rowspan = part.elements.reduce((acc: any, item: any) => acc + item.rowspan, 0);
-        part.edit = false;
-      });
-      piece.rowspan = piece.submodules.reduce((acc: any, item: any) => acc + item.rowspan, 0);
-      piece.edit = false;
-    });
-  }
-
-  editAction(i = -1, j = -1, k = -1, l = -1, m = -1) {
+  // add data C
+  public addItem(i = -1, j = -1, k = -1, l = -1, m = -1) {
     let key;
 
     this.setTable();
 
-    console.log(i, j, k, l, m);
-    const module = i > -1 ? this.tableRows[i] : null;
-    const submodule = j > -1 ? module.submodules[j] : null;
-    const element = k > -1 ? submodule.elements[k] : null;
-    const field = l > -1 ? element.fields[l] : null;
-    const action = m > -1 ? field.actions[m] : null;
-
-    if (action) {
-      action.edit = !action.edit;
-      this.selectedData = action;
-      this.editData = action?.act;
-      key = 'act';
-    } else {
-      if (field) {
-        field.edit = !field.edit;
-        this.selectedData = field;
-        this.editData = field.label;
-        key = 'label';
-      } else {
-        if (element) {
-          element.edit = !element.edit;
-          this.selectedData = element;
-          this.editData = element.type;
-          key = 'type';
-        } else {
-          if (submodule) {
-            submodule.edit = !submodule.edit;
-            this.selectedData = submodule;
-            this.editData = submodule.displayName;
-            key = 'displayName';
-          } else {
-            if (module) {
-              module.edit = !module.edit;
-              this.selectedData = module;
-              this.editData = module.displayName;
-              key = 'displayName';
-            } else {
-              this.setTable();
-              this.selectedData[this.prevKey] = this.editData;
-              this.selectedData = null;
-              this.editData = null;
-              key = null;
-            }
-          }
-        }
-      }
-    }
-
-    setTimeout(() => {
-      this.inputs?.last?.nativeElement?.focus();
-    });
-
-    this.prevKey = key;
-    console.log(this.selectedData);
-  }
-
-  addItem(i = -1, j = -1, k = -1, l = -1, m = -1) {
-    let key;
-
-    this.setTable();
-
-    console.log(i, j, k, l, m);
+    // console.log(i, j, k, l, m);
     const module = i > -1 ? this.tableRows[i] || {} : null;
     const submodule = j > -1 ? module.submodules[j] : null;
     const element = k > -1 ? submodule.elements[k] : null;
@@ -433,32 +351,117 @@ export class Page1 {
     this.prevKey = key;
     this.setTable();
 
+    const module_ = i > -1 ? this.tableRows[i + Number(i != -1 && j == -1)] || {} : null;
+    const submodule_ = j > -1 ? module_.submodules[j + Number(j != -1 && k == -1)] : null;
+    const element_ = k > -1 ? submodule_.elements[k + Number(k != -1 && l == -1)] : null;
+    const field_ = l > -1 ? element_.fields[l + Number(l != -1 && m == -1)] : null;
+    const action_ = m > -1 ? field_.actions[m + Number(m != -1)] : null;
+
+    if (action_) {
+      action_.edit = true;
+      this.selectedData = action_;
+      this.editData = action_?.act;
+      key = 'act';
+    } else {
+      if (field_) {
+        field_.edit = true;
+        this.selectedData = field_;
+        this.editData = field_.label;
+        key = 'label';
+      } else {
+        if (element_) {
+          element_.edit = true;
+          this.selectedData = element_;
+          this.editData = element_.type;
+          key = 'type';
+        } else {
+          if (submodule_) {
+            submodule_.edit = true;
+            this.selectedData = submodule_;
+            this.editData = submodule_.displayName;
+            key = 'displayName';
+          } else {
+            if (module_) {
+              module_.edit = true;
+              this.selectedData = module_;
+              this.editData = module_.displayName;
+              key = 'displayName';
+            } else {
+              this.setTable();
+              this.selectedData[this.prevKey] = this.editData;
+              this.selectedData = null;
+              this.editData = null;
+              key = null;
+            }
+          }
+        }
+      }
+    }
+    // console.log(this.tableRows);
+  }
+
+  // render table read data R
+  private setTable() {
+    this.tableRows.forEach((piece: any) => {
+      piece.submodules.forEach((part: any) => {
+        part.elements.forEach((pack: any) => {
+          pack.fields.forEach((parcel: any) => {
+            parcel?.actions?.forEach((perk: any) => {
+              perk.edit = false;
+            });
+            parcel.rowspan = parcel?.actions?.length || 1;
+            parcel.edit = false;
+          });
+          pack.rowspan = pack.fields.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+          pack.edit = false;
+        });
+        part.rowspan = part.elements.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+        part.edit = false;
+      });
+      piece.rowspan = piece.submodules.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+      piece.edit = false;
+    });
+  }
+
+  // edit data U
+  public editAction(i = -1, j = -1, k = -1, l = -1, m = -1) {
+    let key;
+
+    this.setTable();
+
+    // console.log(i, j, k, l, m);
+    const module = i > -1 ? this.tableRows[i] : null;
+    const submodule = j > -1 ? module.submodules[j] : null;
+    const element = k > -1 ? submodule.elements[k] : null;
+    const field = l > -1 ? element.fields[l] : null;
+    const action = m > -1 ? field.actions[m] : null;
+
     if (action) {
-      field.actions.at(-1).edit = true;
+      action.edit = !action.edit;
       this.selectedData = action;
       this.editData = action?.act;
       key = 'act';
     } else {
       if (field) {
-        element.fields.at(-1).edit = true;
+        field.edit = !field.edit;
         this.selectedData = field;
         this.editData = field.label;
         key = 'label';
       } else {
         if (element) {
-          submodule.elements.at(-1).edit = true;
+          element.edit = !element.edit;
           this.selectedData = element;
           this.editData = element.type;
           key = 'type';
         } else {
           if (submodule) {
-            module.submodules.at(-1).edit = true;
+            submodule.edit = !submodule.edit;
             this.selectedData = submodule;
             this.editData = submodule.displayName;
             key = 'displayName';
           } else {
             if (module) {
-              this.tableRows.at(-1).edit = true;
+              module.edit = !module.edit;
               this.selectedData = module;
               this.editData = module.displayName;
               key = 'displayName';
@@ -473,21 +476,26 @@ export class Page1 {
         }
       }
     }
-    console.log(this.tableRows);
+
+    setTimeout(() => {
+      this.inputs?.last?.nativeElement?.focus();
+    });
+
+    this.prevKey = key;
+    // console.log(this.selectedData);
   }
 
-  keyHandle(ev: any) {
+  public keyHandle(ev: any) {
     if (ev.key == 'Enter') {
       this.editAction();
     }
   }
 
-  remove(i = -1, j = -1, k = -1, l = -1, m = -1) {
-    let key;
-
+  // delete data D
+  public remove(i = -1, j = -1, k = -1, l = -1, m = -1) {
     this.setTable();
 
-    console.log(i, j, k, l, m);
+    // console.log(i, j, k, l, m);
     const module = i > -1 ? this.tableRows[i] : null;
     const submodule = j > -1 ? module.submodules[j] : null;
     const element = k > -1 ? submodule.elements[k] : null;

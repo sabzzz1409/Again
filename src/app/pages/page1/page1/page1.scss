@@ -1,12 +1,12 @@
 .main_table {
   padding: 12px;
+  width: 100%;
 }
 
 table {
   border-collapse: collapse;
   width: 95%;
   margin: auto;
-  overflow: auto;
 }
 
 th {
@@ -16,4 +16,22 @@ th {
 th,
 td {
   border: 1px solid black;
+}
+
+/* MOBILE FIX */
+@media (max-width: 796px) {
+  .main_table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: max-content;
+    min-width: 1200px;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+  }
 }
