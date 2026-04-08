@@ -524,4 +524,10 @@ export class Page1 {
 
     this.setTable();
   }
+
+
+  // save 
+  private saveData(){
+    
+  }
 }
