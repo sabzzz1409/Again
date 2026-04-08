@@ -6,7 +6,7 @@
         <th>S.No</th>
         <th>
           Main Modules
-          <button (click)="addItem(tableRows.length - 1)">+</button>
+          <button (click)="addItem(tableRows.length ? tableRows.length - 1 : 0)">+</button>
         </th>
         <th>Sub Modules</th>
         <th>Elements</th>
@@ -93,7 +93,7 @@
             }
           </td>
           <td>
-            @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0].edit) {
+            @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.edit) {
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
@@ -179,7 +179,7 @@
                 }
               </td>
               <td [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1">
-                @if (sub.elements[0].fields[0]?.actions?.[0].edit) {
+                @if (sub.elements[0].fields[0]?.actions?.[0]?.edit) {
                   <input
                     type="text"
                     [(ngModel)]="editData"
@@ -260,7 +260,7 @@
                   }
                 </td>
                 <td [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1">
-                  @if (elem.fields[0]?.actions?.[0].edit) {
+                  @if (elem.fields[0]?.actions?.[0]?.edit) {
                     <input
                       type="text"
                       [(ngModel)]="editData"
@@ -319,7 +319,7 @@
                     }
                   </td>
                   <td [attr.rowspan]="field?.actions?.[0]?.act || 1">
-                    @if (field?.actions?.[0].edit) {
+                    @if (field?.actions?.[0]?.edit) {
                       <input
                         type="text"
                         [(ngModel)]="editData"

@@ -1,5 +1,47 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Idx } from '../../../shared/services/idx';
+
+type Iaction = {
+  act?: string;
+  edit?: boolean;
+  rowspan?: number;
+  colspan?: number;
+};
+
+type Ifield = {
+  label: string;
+  key: string;
+  actions: Iaction[];
+  edit?: boolean;
+  rowspan?: number;
+  colspan?: number;
+};
+
+type Ielement = {
+  type: string;
+  fields: Ifield[];
+  edit?: boolean;
+  rowspan?: number;
+  colspan?: number;
+};
+
+type IsubModule = {
+  displayName: string;
+  elements: Ielement[];
+  edit?: boolean;
+  rowspan?: number;
+  colspan?: number;
+};
+
+type IModule = {
+  displayName: string;
+  type: 'main' | 'sub';
+  submodules: IsubModule[];
+  edit?: boolean;
+  rowspan?: number;
+  colspan?: number;
+};
 
 @Component({
   selector: 'app-page1',
@@ -11,251 +53,55 @@ export class Page1 {
   @ViewChildren('editInput') inputs!: QueryList<ElementRef>;
   // 5 TIER DESIGN
 
-  public tableRows: any = [
-    {
-      displayName: 'test 1',
-      type: 'main',
-      submodules: [
-        {
-          displayName: 'stest 1',
-          elements: [
-            {
-              type: 'form',
-              fields: [
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-            {
-              type: 'cards',
-              fields: [
-                {
-                  label: 'Total',
-                  key: 'total',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-                {
-                  label: 'Today',
-                  key: 'today',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'table',
-              fields: [
-                {
-                  label: 'S.No',
-                  key: '$index',
-                  actions: [{}],
-                },
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      displayName: 'test 2',
-      type: 'sub',
-      submodules: [
-        {
-          displayName: 'test 2.1',
-          elements: [
-            {
-              type: 'form',
-              fields: [
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-            {
-              type: 'cards',
-              fields: [
-                {
-                  label: 'Total',
-                  key: 'total',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-                {
-                  label: 'Today',
-                  key: 'today',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'table',
-              fields: [
-                {
-                  label: 'S.No',
-                  key: '$index',
-                  actions: [{}],
-                },
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          displayName: 'test 2.2',
-          elements: [
-            {
-              type: 'form',
-              fields: [
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-            {
-              type: 'cards',
-              fields: [
-                {
-                  label: 'Total',
-                  key: 'total',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-                {
-                  label: 'Today',
-                  key: 'today',
-                  actions: [
-                    {
-                      act: 'click',
-                    },
-                    {
-                      act: 'drag',
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'table',
-              fields: [
-                {
-                  label: 'S.No',
-                  key: '$index',
-                  actions: [{}],
-                },
-                {
-                  label: 'Text Data',
-                  key: 'textData',
-                  actions: [{}],
-                },
-                {
-                  label: 'Number Data',
-                  key: 'numData',
-                  actions: [{}],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ];
-  public editData: any;
+  public tableRows: IModule[] = [];
+  public editData: string | undefined | null;
 
   private selectedData: any = {};
-  private prevKey: any;
+  private prevKey: string | null = null;
 
-  constructor() {
-    this.setTable();
+  constructor(
+    private idb: Idx,
+    private cdr: ChangeDetectorRef,
+  ) {
+    this.idb.initDb({
+      modules: '++id, displayName, type',
+    });
+    this.loadData();
+  }
+
+  private async loadData(mode: 'offline' | 'online' = 'offline') {
+    console.log(mode);
+    if (mode == 'offline') {
+      try {
+        const rows = await this.idb.read('modules');
+        if (rows.length) {
+          this.tableRows = rows;
+          console.log(rows);
+          this.setTable();
+          this.cdr.detectChanges();
+        }
+      } catch (err) {
+        console.error(err);
+        console.warn('No modules table found yet. Starting fresh.');
+      }
+    }
   }
 
   // add data C
   public addItem(i = -1, j = -1, k = -1, l = -1, m = -1) {
-    let key;
+    let key: 'displayName' | 'type' | 'label' | 'act' | null;
 
     this.setTable();
 
-    // console.log(i, j, k, l, m);
-    const module = i > -1 ? this.tableRows[i] || {} : null;
-    const submodule = j > -1 ? module.submodules[j] : null;
-    const element = k > -1 ? submodule.elements[k] : null;
-    const field = l > -1 ? element.fields[l] : null;
-    const action = m > -1 ? field.actions[m] : null;
+    console.log(i, j, k, l, m);
+    const module: IModule | null = i > -1 ? this.tableRows[i] || {} : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
+    const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
+    const action: Iaction | null | undefined = m > -1 ? field?.actions[m] : null;
 
     if (action) {
-      field.actions.splice(m + 1, 0, {
+      field?.actions.splice(m + 1, 0, {
         act: '',
         edit: true,
       });
@@ -264,8 +110,9 @@ export class Page1 {
       key = 'act';
     } else {
       if (field) {
-        element.fields.splice(l + 1, 0, {
+        element?.fields.splice(l + 1, 0, {
           label: '',
+          key: '',
           edit: true,
           actions: [{}],
         });
@@ -274,12 +121,13 @@ export class Page1 {
         key = 'label';
       } else {
         if (element) {
-          submodule.elements.splice(k + 1, 0, {
+          submodule?.elements.splice(k + 1, 0, {
             edit: true,
             type: '',
             fields: [
               {
-                type: '',
+                label: '',
+                key: '',
                 actions: [{}],
               },
             ],
@@ -289,7 +137,7 @@ export class Page1 {
           key = 'type';
         } else {
           if (submodule) {
-            module.submodules.splice(j + 1, 0, {
+            module?.submodules.splice(j + 1, 0, {
               edit: true,
               displayName: '',
               elements: [
@@ -297,7 +145,8 @@ export class Page1 {
                   type: '',
                   fields: [
                     {
-                      type: '',
+                      label: '',
+                      key: '',
                       actions: [{}],
                     },
                   ],
@@ -312,6 +161,7 @@ export class Page1 {
               this.tableRows.splice(i + 1, 0, {
                 displayName: '',
                 edit: true,
+                type: 'main',
                 submodules: [
                   {
                     displayName: '',
@@ -320,7 +170,8 @@ export class Page1 {
                         type: '',
                         fields: [
                           {
-                            type: '',
+                            label: '',
+                            key: '',
                             actions: [{}],
                           },
                         ],
@@ -334,7 +185,7 @@ export class Page1 {
               key = 'displayName';
             } else {
               this.setTable();
-              this.selectedData[this.prevKey] = this.editData;
+              if (this.prevKey) this.selectedData[this.prevKey] = this.editData;
               this.selectedData = null;
               this.editData = null;
               key = null;
@@ -351,11 +202,16 @@ export class Page1 {
     this.prevKey = key;
     this.setTable();
 
-    const module_ = i > -1 ? this.tableRows[i + Number(i != -1 && j == -1)] || {} : null;
-    const submodule_ = j > -1 ? module_.submodules[j + Number(j != -1 && k == -1)] : null;
-    const element_ = k > -1 ? submodule_.elements[k + Number(k != -1 && l == -1)] : null;
-    const field_ = l > -1 ? element_.fields[l + Number(l != -1 && m == -1)] : null;
-    const action_ = m > -1 ? field_.actions[m + Number(m != -1)] : null;
+    const module_: IModule | null =
+      i > -1 ? this.tableRows[i + Number(i != -1 && j == -1)] || {} : null;
+    const submodule_: IsubModule | null | undefined =
+      j > -1 ? module_?.submodules[j + Number(j != -1 && k == -1)] : null;
+    const element_: Ielement | null | undefined =
+      k > -1 ? submodule_?.elements[k + Number(k != -1 && l == -1)] : null;
+    const field_: Ifield | null | undefined =
+      l > -1 ? element_?.fields[l + Number(l != -1 && m == -1)] : null;
+    const action_: Iaction | null | undefined =
+      m > -1 ? field_?.actions[m + Number(m != -1)] : null;
 
     if (action_) {
       action_.edit = true;
@@ -388,7 +244,7 @@ export class Page1 {
               key = 'displayName';
             } else {
               this.setTable();
-              this.selectedData[this.prevKey] = this.editData;
+              if (this.prevKey) this.selectedData[this.prevKey] = this.editData;
               this.selectedData = null;
               this.editData = null;
               key = null;
@@ -402,39 +258,48 @@ export class Page1 {
 
   // render table read data R
   private setTable() {
-    this.tableRows.forEach((piece: any) => {
-      piece.submodules.forEach((part: any) => {
-        part.elements.forEach((pack: any) => {
-          pack.fields.forEach((parcel: any) => {
-            parcel?.actions?.forEach((perk: any) => {
+    this.tableRows.forEach((piece: IModule) => {
+      piece.submodules.forEach((part: IsubModule) => {
+        part.elements.forEach((pack: Ielement) => {
+          pack.fields.forEach((parcel: Ifield) => {
+            parcel?.actions?.forEach((perk: Iaction) => {
               perk.edit = false;
             });
             parcel.rowspan = parcel?.actions?.length || 1;
             parcel.edit = false;
           });
-          pack.rowspan = pack.fields.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+          pack.rowspan = pack.fields.reduce(
+            (acc: number, item: Ifield) => acc + Number(item.rowspan),
+            0,
+          );
           pack.edit = false;
         });
-        part.rowspan = part.elements.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+        part.rowspan = part.elements.reduce(
+          (acc: number, item: Ielement) => acc + Number(item.rowspan),
+          0,
+        );
         part.edit = false;
       });
-      piece.rowspan = piece.submodules.reduce((acc: any, item: any) => acc + item.rowspan, 0);
+      piece.rowspan = piece.submodules.reduce(
+        (acc: number, item: IsubModule) => acc + Number(item.rowspan),
+        0,
+      );
       piece.edit = false;
     });
   }
 
   // edit data U
   public editAction(i = -1, j = -1, k = -1, l = -1, m = -1) {
-    let key;
+    let key: 'displayName' | 'type' | 'label' | 'act' | null;
 
     this.setTable();
 
     // console.log(i, j, k, l, m);
-    const module = i > -1 ? this.tableRows[i] : null;
-    const submodule = j > -1 ? module.submodules[j] : null;
-    const element = k > -1 ? submodule.elements[k] : null;
-    const field = l > -1 ? element.fields[l] : null;
-    const action = m > -1 ? field.actions[m] : null;
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
+    const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
+    const action: Iaction | null | undefined = m > -1 ? field?.actions[m] : null;
 
     if (action) {
       action.edit = !action.edit;
@@ -467,7 +332,7 @@ export class Page1 {
               key = 'displayName';
             } else {
               this.setTable();
-              this.selectedData[this.prevKey] = this.editData;
+              if (this.prevKey) this.selectedData[this.prevKey] = this.editData;
               this.selectedData = null;
               this.editData = null;
               key = null;
@@ -485,9 +350,11 @@ export class Page1 {
     // console.log(this.selectedData);
   }
 
-  public keyHandle(ev: any) {
+  public keyHandle(ev: KeyboardEvent) {
     if (ev.key == 'Enter') {
       this.editAction();
+      this.idb.dropTable('modules');
+      this.saveData();
     }
   }
 
@@ -496,25 +363,25 @@ export class Page1 {
     this.setTable();
 
     // console.log(i, j, k, l, m);
-    const module = i > -1 ? this.tableRows[i] : null;
-    const submodule = j > -1 ? module.submodules[j] : null;
-    const element = k > -1 ? submodule.elements[k] : null;
-    const field = l > -1 ? element.fields[l] : null;
-    const action = m > -1 ? field.actions[m] : null;
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
+    const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
+    const action: Iaction | null | undefined = m > -1 ? field?.actions[m] : null;
 
-    if (action && field.actions.length - 1) {
+    if (action && field && field.actions.length - 1) {
       field.actions.splice(m, 1);
     } else {
-      if (field && element.fields.length - 1) {
+      if (field && element && element.fields.length - 1) {
         element.fields.splice(l, 1);
       } else {
-        if (element && submodule.elements.length - 1) {
+        if (element && submodule && submodule.elements.length - 1) {
           submodule.elements.splice(k, 1);
         } else {
-          if (submodule && module.submodules.length - 1) {
+          if (submodule && module && module.submodules.length - 1) {
             module.submodules.splice(j, 1);
           } else {
-            if (module && this.tableRows.length - 1) {
+            if (module) {
               this.tableRows.splice(i, 1);
             }
           }
@@ -523,11 +390,17 @@ export class Page1 {
     }
 
     this.setTable();
+    this.saveData();
   }
 
-
-  // save 
-  private saveData(){
-    
+  // save
+  private async saveData() {
+    try {
+      await this.idb.dropTable('modules');
+      await this.idb.create('modules', this.tableRows); // auto-creates table if missing
+      console.log('Data saved!');
+    } catch (err) {
+      console.error('Failed to save data:', err);
+    }
   }
 }
