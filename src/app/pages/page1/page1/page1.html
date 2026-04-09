@@ -1,4 +1,7 @@
 <p>page1 works!</p>
+<div style="display: flex; justify-content: end; width: 90%; margin: auto">
+  <button (click)="register()">Post Model</button>
+</div>
 <div class="main_table">
   <table>
     <thead>
@@ -6,7 +9,9 @@
         <th>S.No</th>
         <th>
           Main Modules
-          <button (click)="addItem(tableRows.length ? tableRows.length - 1 : 0)">+</button>
+          <button (click)="addItem(tableRows.length ? tableRows.length - 1 : 0)" title="add module">
+            +
+          </button>
         </th>
         <th>Sub Modules</th>
         <th>Elements</th>
@@ -22,16 +27,28 @@
           </td>
           <td [attr.rowspan]="mod.rowspan" [attr.colspan]="mod.submodules.length - 1 ? 1 : 2">
             @if (mod.edit) {
+              <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 20px" (click)="editAction(i)">
-                  {{ mod.displayName }}
+                <span style="min-width: 60px; display: grid; gap: 2px">
+                  <div style="background-color: lightgray" (click)="editAction(i)">
+                    Display Name : {{ mod.displayName }}
+                  </div>
+                  <div style="background-color: lightgray" (click)="addIcon(i)">
+                    Icon : {{ mod.iconName }}
+                  </div>
+                  <div style="background-color: lightgray" (click)="addRoute(i)">
+                    Route : {{ mod.route }}
+                  </div>
                 </span>
                 <span>
-                  <button (click)="addItem(i)">+</button>
+                  <button (click)="addItem(i)" title="add module">+</button>
+                  <!-- <button (click)="addIcon(i)" title="add icon">*</button>
+                  <button (click)="addRoute(i)" title="add route">=</button> -->
+
                   @if (!(mod.submodules.length - 1)) {
-                    <button (click)="addItem(i, 0)">-</button>
+                    <button (click)="addItem(i, 0)" title="add submodule">-</button>
                   }
                   <button (click)="remove(i)">x</button>
                 </span>
@@ -41,6 +58,7 @@
           @if (mod.submodules.length - 1) {
             <td [attr.rowspan]="mod.submodules[0].rowspan">
               @if (mod.submodules[0].edit) {
+                <label>{{ prevKey }} : </label>
                 <input
                   type="text"
                   [(ngModel)]="editData"
@@ -51,11 +69,21 @@
                 <div
                   style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                 >
-                  <span style="min-width: 20px" (click)="editAction(i, 0)">
-                    {{ mod.submodules[0].displayName }}
+                  <span style="min-width: 60px; display: grid; gap: 2px">
+                    <div style="background-color: lightgray" (click)="editAction(i, 0)">
+                      Display Name : {{ mod.submodules[0].displayName }}
+                    </div>
+                    <div style="background-color: lightgray" (click)="addIcon(i, 0)">
+                      Icon : {{ mod.submodules[0].iconName }}
+                    </div>
+                    <div style="background-color: lightgray" (click)="addRoute(i, 0)">
+                      Route : {{ mod.submodules[0].route }}
+                    </div>
                   </span>
                   <span>
                     <button (click)="addItem(i, 0)">+</button>
+                    <!-- <button (click)="addIcon(i, 0)" title="add icon">*</button>
+                    <button (click)="addRoute(i, 0)" title="add route">=</button> -->
                     <button (click)="remove(i, 0)">x</button>
                   </span>
                 </div>
@@ -64,10 +92,14 @@
           }
           <td [attr.rowspan]="mod.submodules[0].elements[0].rowspan">
             @if (mod.submodules[0].elements[0].edit) {
+              <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 20px" (click)="editAction(i, 0, 0)">
+                <span
+                  style="min-width: 60px; background-color: lightgray"
+                  (click)="editAction(i, 0, 0)"
+                >
                   {{ mod.submodules[0].elements[0].type }}
                 </span>
                 <span>
@@ -79,11 +111,19 @@
           </td>
           <td [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan">
             @if (mod.submodules[0].elements[0].fields[0].edit) {
+              <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 20px" (click)="editAction(i, 0, 0, 0)">
-                  {{ mod.submodules[0].elements[0].fields[0].label }}
+                <span style="min-width: 60px">
+                  <span style="min-width: 60px; background-color: lightgray; display: grid">
+                    <div (click)="editAction(i, 0, 0, 0)">
+                      Label : {{ mod.submodules[0].elements[0].fields[0].label }}
+                    </div>
+                    <div (click)="addKey(i, 0, 0, 0)">
+                      Key : {{ mod.submodules[0].elements[0].fields[0].key }}
+                    </div>
+                  </span>
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0, 0)">+</button>
@@ -94,10 +134,14 @@
           </td>
           <td>
             @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.edit) {
+              <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 20px" (click)="editAction(i, 0, 0, 0, 0)">
+                <span
+                  style="min-width: 60px; background-color: lightgray"
+                  (click)="editAction(i, 0, 0, 0, 0)"
+                >
                   {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
                 </span>
                 <span>
@@ -114,6 +158,7 @@
             <tr>
               <td [attr.rowspan]="sub.rowspan">
                 @if (sub.edit) {
+                  <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
@@ -124,11 +169,21 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span style="min-width: 20px" (click)="editAction(i, j)">
-                      {{ sub.displayName }}
+                    <span style="min-width: 60px; display: grid; gap: 2px">
+                      <div style="background-color: lightgray" (click)="editAction(i, j)">
+                        Display Name : {{ sub.displayName }}
+                      </div>
+                      <div style="background-color: lightgray" (click)="addIcon(i, j)">
+                        Icon : {{ sub.iconName }}
+                      </div>
+                      <div style="background-color: lightgray" (click)="addRoute(i, j)">
+                        Route : {{ sub.route }}
+                      </div>
                     </span>
                     <span>
                       <button (click)="addItem(i, j)">+</button>
+                      <!-- <button (click)="addIcon(i, j)" title="add icon">*</button>
+                      <button (click)="addRoute(i, j)" title="add route">=</button> -->
                       <button (click)="remove(i, j)">x</button>
                     </span>
                   </div>
@@ -136,6 +191,7 @@
               </td>
               <td [attr.rowspan]="sub.elements[0].rowspan">
                 @if (sub.elements[0].edit) {
+                  <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
@@ -146,7 +202,10 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span style="min-width: 20px" (click)="editAction(i, j, 0)">
+                    <span
+                      style="min-width: 60px; background-color: lightgray"
+                      (click)="editAction(i, j, 0)"
+                    >
                       {{ sub.elements[0].type }}
                     </span>
                     <span>
@@ -158,6 +217,7 @@
               </td>
               <td [attr.rowspan]="sub.elements[0].fields[0].rowspan">
                 @if (sub.elements[0].fields[0].edit) {
+                  <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
@@ -168,8 +228,15 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span style="min-width: 20px" (click)="editAction(i, j, 0, 0)">
-                      {{ sub.elements[0].fields[0].label }}
+                    <span style="min-width: 60px">
+                      <span style="min-width: 60px; background-color: lightgray; display: grid">
+                        <div (click)="editAction(i, j, 0, 0)">
+                          Label : {{ sub.elements[0].fields[0].label }}
+                        </div>
+                        <div (click)="addKey(i, j, 0, 0)">
+                          Key : {{ sub.elements[0].fields[0].key }}
+                        </div>
+                      </span>
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0, 0)">+</button>
@@ -180,6 +247,7 @@
               </td>
               <td [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1">
                 @if (sub.elements[0].fields[0]?.actions?.[0]?.edit) {
+                  <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
@@ -190,7 +258,10 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span style="min-width: 20px" (click)="editAction(i, j, 0, 0, 0)">
+                    <span
+                      style="min-width: 60px; background-color: lightgray"
+                      (click)="editAction(i, j, 0, 0, 0)"
+                    >
                       {{ sub.elements[0].fields[0]?.actions?.[0]?.act || '-' }}
                     </span>
                     <span>
@@ -207,6 +278,7 @@
               <tr>
                 <td [attr.rowspan]="elem.rowspan">
                   @if (elem.edit) {
+                    <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
@@ -222,7 +294,10 @@
                         margin: auto;
                       "
                     >
-                      <span style="min-width: 20px" (click)="editAction(i, j, k)">
+                      <span
+                        style="min-width: 60px; background-color: lightgray"
+                        (click)="editAction(i, j, k)"
+                      >
                         {{ elem.type }}
                       </span>
                       <span>
@@ -234,6 +309,7 @@
                 </td>
                 <td [attr.rowspan]="elem.fields[0].rowspan">
                   @if (elem.fields[0].edit) {
+                    <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
@@ -249,8 +325,13 @@
                         margin: auto;
                       "
                     >
-                      <span style="min-width: 20px" (click)="editAction(i, j, k, 0)">
-                        {{ elem.fields[0].label }}
+                      <span style="min-width: 60px">
+                        <span style="min-width: 60px; background-color: lightgray; display: grid">
+                          <div (click)="editAction(i, j, k, 0)">
+                            Label : {{ elem.fields[0].label }}
+                          </div>
+                          <div (click)="addKey(i, j, k, 0)">Key : {{ elem.fields[0].key }}</div>
+                        </span>
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k, 0)">+</button>
@@ -261,6 +342,7 @@
                 </td>
                 <td [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1">
                   @if (elem.fields[0]?.actions?.[0]?.edit) {
+                    <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
@@ -276,7 +358,10 @@
                         margin: auto;
                       "
                     >
-                      <span style="min-width: 20px" (click)="editAction(i, j, k, 0, 0)">
+                      <span
+                        style="min-width: 60px; background-color: lightgray"
+                        (click)="editAction(i, j, k, 0, 0)"
+                      >
                         {{ elem.fields[0]?.actions?.[0]?.act || '-' }}
                       </span>
                       <span>
@@ -293,6 +378,7 @@
                 <tr>
                   <td [attr.rowspan]="field.rowspan">
                     @if (field.edit) {
+                      <label>{{ prevKey }} : </label>
                       <input
                         type="text"
                         [(ngModel)]="editData"
@@ -308,8 +394,11 @@
                           margin: auto;
                         "
                       >
-                        <span style="min-width: 20px" (click)="editAction(i, j, k, l)">
-                          {{ field.label }}
+                        <span style="min-width: 60px">
+                          <span style="min-width: 60px; background-color: lightgray; display: grid">
+                            <div (click)="editAction(i, j, k, l)">Label : {{ field.label }}</div>
+                            <div (click)="addKey(i, j, k, l)">Key : {{ field.key }}</div>
+                          </span>
                         </span>
                         <span>
                           <button (click)="addItem(i, j, k, l)">+</button>
@@ -320,6 +409,7 @@
                   </td>
                   <td [attr.rowspan]="field?.actions?.[0]?.act || 1">
                     @if (field?.actions?.[0]?.edit) {
+                      <label>{{ prevKey }} : </label>
                       <input
                         type="text"
                         [(ngModel)]="editData"
@@ -335,7 +425,10 @@
                           margin: auto;
                         "
                       >
-                        <span style="min-width: 20px" (click)="editAction(i, j, k, l, 0)">
+                        <span
+                          style="min-width: 60px; background-color: lightgray"
+                          (click)="editAction(i, j, k, l, 0)"
+                        >
                           {{ field?.actions?.[0]?.act || '--' }}
                         </span>
                         <span>
@@ -352,6 +445,7 @@
                   <tr>
                     <td>
                       @if (act.edit) {
+                        <label>{{ prevKey }} : </label>
                         <input
                           type="text"
                           [(ngModel)]="editData"
@@ -367,7 +461,10 @@
                             margin: auto;
                           "
                         >
-                          <span style="min-width: 20px" (click)="editAction(i, j, k, l, m)">
+                          <span
+                            style="min-width: 60px; background-color: lightgray"
+                            (click)="editAction(i, j, k, l, m)"
+                          >
                             {{ act?.act || '---' }}
                           </span>
                           <span>

@@ -16,6 +16,13 @@ th {
 th,
 td {
   border: 1px solid black;
+  padding: 8px 4px;
+  
+}
+
+td div{
+  padding: 2px 10px;
+  border-radius: 10px;
 }
 
 /* MOBILE FIX */

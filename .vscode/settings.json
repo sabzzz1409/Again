@@ -1,7 +1,7 @@
 {
   "files.exclude": {
     "*.*": true,
-    // "dist": true,
+    "dist": true,
     "node_modules": true,
     "public": true,
     "src/*.*": true,
@@ -9,7 +9,7 @@
     "src/environments": true,
     "src/app/layouts": true,
     "src/app/utils": true,
-    // "src/app/shared": true,
+    "src/app/shared": true,
     "**/*.spec.ts": true
   }
 }

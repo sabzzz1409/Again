@@ -28,6 +28,8 @@ type Ielement = {
 
 type IsubModule = {
   displayName: string;
+  route: string;
+  iconName: string;
   elements: Ielement[];
   edit?: boolean;
   rowspan?: number;
@@ -37,6 +39,8 @@ type IsubModule = {
 type IModule = {
   displayName: string;
   type: 'main' | 'sub';
+  route: string;
+  iconName: string;
   submodules: IsubModule[];
   edit?: boolean;
   rowspan?: number;
@@ -55,9 +59,9 @@ export class Page1 {
 
   public tableRows: IModule[] = [];
   public editData: string | undefined | null;
+  public prevKey: string | null = null;
 
   private selectedData: any = {};
-  private prevKey: string | null = null;
 
   constructor(
     private idb: Idx,
@@ -140,6 +144,8 @@ export class Page1 {
             module?.submodules.splice(j + 1, 0, {
               edit: true,
               displayName: '',
+              route: '',
+              iconName: '',
               elements: [
                 {
                   type: '',
@@ -162,9 +168,13 @@ export class Page1 {
                 displayName: '',
                 edit: true,
                 type: 'main',
+                route: '',
+                iconName: '',
                 submodules: [
                   {
                     displayName: '',
+                    route: '',
+                    iconName: '',
                     elements: [
                       {
                         type: '',
@@ -402,5 +412,63 @@ export class Page1 {
     } catch (err) {
       console.error('Failed to save data:', err);
     }
+  }
+
+  // post
+  public register() {
+    console.log(this.tableRows);
+  }
+
+  public addRoute(i: number = -1, j: number = -1) {
+    this.setTable();
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+
+    if (submodule) {
+      this.selectedData = submodule;
+      this.prevKey = 'route';
+      submodule.edit = true;
+      this.editData = submodule.route;
+    } else {
+      if (module) {
+        this.selectedData = module;
+        this.prevKey = 'route';
+        module.edit = true;
+        this.editData = module.route;
+      }
+    }
+  }
+
+  public addIcon(i: number = -1, j: number = -1) {
+    this.setTable();
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    if (submodule) {
+      this.selectedData = submodule;
+      this.prevKey = 'iconName';
+      submodule.edit = true;
+      this.editData = submodule.iconName;
+    } else {
+      if (module) {
+        this.selectedData = module;
+        this.prevKey = 'iconName';
+        module.edit = true;
+        this.editData = module.iconName;
+      }
+    }
+  }
+
+  public addKey(i: number = -1, j: number = -1, k: number = -1, l: number = -1) {
+    this.setTable();
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
+    const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
+    if (!module || !submodule || !element || !field) return;
+
+    this.selectedData = field;
+    field.edit = true;
+    this.prevKey = 'key';
+    this.editData = field.key;
   }
 }
