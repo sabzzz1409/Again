@@ -1,6 +1,32 @@
 <p>page1 works!</p>
-<div class="top_view">
-  <button (click)="register()">Post Model</button>
+<ul>
+  <li>click module header to insert first module</li>
+  <li>click S.Nos to insert module</li>
+  <li>double click single module to create submodule</li>
+  <li>double click rest to add respectively</li>
+  <li>single click gray zones to edit</li>
+  <li>right click to delete</li>
+</ul>
+<div class="top_view just_end">
+  <label>
+    Role:
+    <select>
+      <option value="">--select role--</option>
+      <option value="0">Admin</option>
+      <option value="1">Officer</option>
+    </select>
+  </label>
+  <label>
+    User:
+    <select>
+      <option value="all">All</option>
+      <option value="1">Person A</option>
+      <option value="2">Person B</option>
+    </select>
+  </label>
+  <button (click)="register()" type="button">Post Model</button>
+  <input type="file" hidden #uploadFile (change)="readJson($event)" />
+  <button (click)="uploadFile.click()" type="button">Upload Model</button>
 </div>
 <div class="main_table">
   <table>
@@ -23,13 +49,14 @@
     <tbody>
       @for (mod of tableRows; track $index; let i = $index) {
         <tr>
-          <td [attr.rowspan]="mod.rowspan" class="txt_ctr">
+          <td [attr.rowspan]="mod.rowspan" class="txt_ctr" (click)="addItem(i)">
             {{ $index + 1 }}
           </td>
           <td
             [attr.rowspan]="mod.rowspan"
             [attr.colspan]="mod.submodules.length - 1 ? 1 : 2"
             (contextmenu)="toDelete($event, i)"
+            (dblclick)="!(mod.submodules.length - 1) && addItem(i, 0)"
           >
             @if (mod.edit) {
               <label>{{ prevKey }} : </label>
@@ -41,25 +68,21 @@
                 (keypress)="keyHandle($event)"
               />
             } @else {
-              <div class="top_view">
-                <span class="mini_grid">
-                  <div class="highlight" (click)="editAction(i)">
-                    Display Name : {{ mod.displayName }}
-                  </div>
-                  <div class="highlight" (click)="addIcon(i)">Icon : {{ mod.iconName }}</div>
-                  <div class="highlight" (click)="addRoute(i)">Route : {{ mod.route }}</div>
-                </span>
-                <span>
-                  <button (click)="addItem(i)" title="add module">+</button>
-                  @if (!(mod.submodules.length - 1)) {
-                    <button (click)="addItem(i, 0)" title="add submodule">-</button>
-                  }
-                </span>
+              <div class="top_view mini_grid">
+                <div class="highlight" (click)="editAction(i)">
+                  Display Name : {{ mod.displayName }}
+                </div>
+                <div class="highlight" (click)="addIcon(i)">Icon : {{ mod.iconName }}</div>
+                <div class="highlight" (click)="addRoute(i)">Route : {{ mod.route }}</div>
               </div>
             }
           </td>
           @if (mod.submodules.length - 1) {
-            <td [attr.rowspan]="mod.submodules[0].rowspan" (contextmenu)="toDelete($event, i, 0)">
+            <td
+              [attr.rowspan]="mod.submodules[0].rowspan"
+              (contextmenu)="toDelete($event, i, 0)"
+              (dblclick)="addItem(i, 0)"
+            >
               @if (mod.submodules[0].edit) {
                 <label>{{ prevKey }} : </label>
                 <input
@@ -70,21 +93,16 @@
                   (keypress)="keyHandle($event)"
                 />
               } @else {
-                <div class="">
-                  <span class="mini_grid">
-                    <div class="highlight" (click)="editAction(i, 0)">
-                      Display Name : {{ mod.submodules[0].displayName }}
-                    </div>
-                    <div class="highlight" (click)="addIcon(i, 0)">
-                      Icon : {{ mod.submodules[0].iconName }}
-                    </div>
-                    <div class="highlight" (click)="addRoute(i, 0)">
-                      Route : {{ mod.submodules[0].route }}
-                    </div>
-                  </span>
-                  <span>
-                    <button (click)="addItem(i, 0)">+</button>
-                  </span>
+                <div class="top_view mini_grid">
+                  <div class="highlight" (click)="editAction(i, 0)">
+                    Display Name : {{ mod.submodules[0].displayName }}
+                  </div>
+                  <div class="highlight" (click)="addIcon(i, 0)">
+                    Icon : {{ mod.submodules[0].iconName }}
+                  </div>
+                  <div class="highlight" (click)="addRoute(i, 0)">
+                    Route : {{ mod.submodules[0].route }}
+                  </div>
                 </div>
               }
             </td>
@@ -92,6 +110,7 @@
           <td
             [attr.rowspan]="mod.submodules[0].elements[0].rowspan"
             (contextmenu)="toDelete($event, i, 0, 0)"
+            (dblclick)="addItem(i, 0, 0)"
           >
             @if (mod.submodules[0].elements[0].edit) {
               <label>{{ prevKey }} : </label>
@@ -105,10 +124,7 @@
             } @else {
               <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0)">
-                  {{ mod.submodules[0].elements[0].type }}
-                </span>
-                <span>
-                  <button (click)="addItem(i, 0, 0)">+</button>
+                  type : {{ mod.submodules[0].elements[0].type }}
                 </span>
               </div>
             }
@@ -116,34 +132,29 @@
           <td
             [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan"
             (contextmenu)="toDelete($event, i, 0, 0, 0)"
+            (dblclick)="addItem(i, 0, 0, 0)"
           >
             @if (mod.submodules[0].elements[0].fields[0].edit) {
               <label>{{ prevKey }} : </label>
               <input
-                type="text"
                 [(ngModel)]="editData"
+                type="text"
                 #editInput
                 (blur)="blurEvent()"
                 (keypress)="keyHandle($event)"
               />
             } @else {
-              <div class="top_view">
-                <span class="mini_grid">
-                  <div (click)="editAction(i, 0, 0, 0)" class="highlight">
-                    Label : {{ mod.submodules[0].elements[0].fields[0].label }}
-                  </div>
-                  <div (click)="addKey(i, 0, 0, 0)" class="highlight">
-                    Key : {{ mod.submodules[0].elements[0].fields[0].key }}
-                  </div>
-                </span>
-
-                <span>
-                  <button (click)="addItem(i, 0, 0, 0)">+</button>
-                </span>
+              <div class="top_view mini_grid">
+                <div (click)="editAction(i, 0, 0, 0)" class="highlight">
+                  Label : {{ mod.submodules[0].elements[0].fields[0].label }}
+                </div>
+                <div (click)="addKey(i, 0, 0, 0)" class="highlight">
+                  Key : {{ mod.submodules[0].elements[0].fields[0].key }}
+                </div>
               </div>
             }
           </td>
-          <td (contextmenu)="toDelete($event, i, 0, 0, 0, 0)">
+          <td (contextmenu)="toDelete($event, i, 0, 0, 0, 0)" (dblclick)="addItem(i, 0, 0, 0, 0)">
             @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.edit) {
               <label>{{ prevKey }} : </label>
               <input
@@ -156,10 +167,7 @@
             } @else {
               <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0, 0, 0)">
-                  {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
-                </span>
-                <span>
-                  <button (click)="addItem(i, 0, 0, 0, 0)">+</button>
+                  act : {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
                 </span>
               </div>
             }
@@ -169,7 +177,11 @@
         @for (sub of mod.submodules; track $index; let j = $index) {
           @if (!$first) {
             <tr>
-              <td [attr.rowspan]="sub.rowspan" (contextmenu)="toDelete($event, i, j)">
+              <td
+                [attr.rowspan]="sub.rowspan"
+                (dblclick)="addItem(i, j)"
+                (contextmenu)="toDelete($event, i, j)"
+              >
                 @if (sub.edit) {
                   <label>{{ prevKey }} : </label>
                   <input
@@ -180,22 +192,18 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div class="top_view">
-                    <span class="mini_grid">
-                      <div class="highlight" (click)="editAction(i, j)">
-                        Display Name : {{ sub.displayName }}
-                      </div>
-                      <div class="highlight" (click)="addIcon(i, j)">Icon : {{ sub.iconName }}</div>
-                      <div class="highlight" (click)="addRoute(i, j)">Route : {{ sub.route }}</div>
-                    </span>
-                    <span>
-                      <button (click)="addItem(i, j)">+</button>
-                    </span>
+                  <div class="top_view mini_grid">
+                    <div class="highlight" (click)="editAction(i, j)">
+                      Display Name : {{ sub.displayName }}
+                    </div>
+                    <div class="highlight" (click)="addIcon(i, j)">Icon : {{ sub.iconName }}</div>
+                    <div class="highlight" (click)="addRoute(i, j)">Route : {{ sub.route }}</div>
                   </div>
                 }
               </td>
               <td
                 [attr.rowspan]="sub.elements[0].rowspan"
+                (dblclick)="addItem(i, j, 0)"
                 (contextmenu)="toDelete($event, i, j, 0)"
               >
                 @if (sub.elements[0].edit) {
@@ -210,16 +218,14 @@
                 } @else {
                   <div class="top_view">
                     <span class="highlight" (click)="editAction(i, j, 0)">
-                      {{ sub.elements[0].type }}
-                    </span>
-                    <span>
-                      <button (click)="addItem(i, j, 0)">+</button>
+                      type : {{ sub.elements[0].type }}
                     </span>
                   </div>
                 }
               </td>
               <td
                 [attr.rowspan]="sub.elements[0].fields[0].rowspan"
+                (dblclick)="addItem(i, j, 0, 0)"
                 (contextmenu)="toDelete($event, i, j, 0, 0)"
               >
                 @if (sub.elements[0].fields[0].edit) {
@@ -232,24 +238,19 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div class="top_view">
-                    <span class="mini_grid">
-                      <div (click)="editAction(i, j, 0, 0)" class="highlight">
-                        Label : {{ sub.elements[0].fields[0].label }}
-                      </div>
-                      <div (click)="addKey(i, j, 0, 0)" class="highlight">
-                        Key : {{ sub.elements[0].fields[0].key }}
-                      </div>
-                    </span>
-
-                    <span>
-                      <button (click)="addItem(i, j, 0, 0)">+</button>
-                    </span>
+                  <div class="top_view mini_grid">
+                    <div (click)="editAction(i, j, 0, 0)" class="highlight">
+                      Label : {{ sub.elements[0].fields[0].label }}
+                    </div>
+                    <div (click)="addKey(i, j, 0, 0)" class="highlight">
+                      Key : {{ sub.elements[0].fields[0].key }}
+                    </div>
                   </div>
                 }
               </td>
               <td
                 [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1"
+                (dblclick)="addItem(i, j, 0, 0, 0)"
                 (contextmenu)="toDelete($event, i, j, 0, 0, 0)"
               >
                 @if (sub.elements[0].fields[0]?.actions?.[0]?.edit) {
@@ -264,10 +265,7 @@
                 } @else {
                   <div class="top_view">
                     <span class="highlight" (click)="editAction(i, j, 0, 0, 0)">
-                      {{ sub.elements[0].fields[0]?.actions?.[0]?.act }}
-                    </span>
-                    <span>
-                      <button (click)="addItem(i, j, 0, 0, 0)">+</button>
+                      act : {{ sub.elements[0].fields[0]?.actions?.[0]?.act }}
                     </span>
                   </div>
                 }
@@ -277,7 +275,11 @@
           @for (elem of sub.elements; track $index; let k = $index) {
             @if (!$first) {
               <tr>
-                <td [attr.rowspan]="elem.rowspan" (contextmenu)="toDelete($event, i, j, k)">
+                <td
+                  [attr.rowspan]="elem.rowspan"
+                  (dblclick)="addItem(i, j, k)"
+                  (contextmenu)="toDelete($event, i, j, k)"
+                >
                   @if (elem.edit) {
                     <label>{{ prevKey }} : </label>
                     <input
@@ -290,16 +292,14 @@
                   } @else {
                     <div class="top_view">
                       <span class="highlight" (click)="editAction(i, j, k)">
-                        {{ elem.type }}
-                      </span>
-                      <span>
-                        <button (click)="addItem(i, j, k)">+</button>
+                        type : {{ elem.type }}
                       </span>
                     </div>
                   }
                 </td>
                 <td
                   [attr.rowspan]="elem.fields[0].rowspan"
+                  (dblclick)="addItem(i, j, k, 0)"
                   (contextmenu)="toDelete($event, i, j, k, 0)"
                 >
                   @if (elem.fields[0].edit) {
@@ -312,24 +312,19 @@
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
-                    <div class="top_view">
-                      <span class="mini_grid">
-                        <div (click)="editAction(i, j, k, 0)" class="highlight">
-                          Label : {{ elem.fields[0].label }}
-                        </div>
-                        <div (click)="addKey(i, j, k, 0)" class="highlight">
-                          Key : {{ elem.fields[0].key }}
-                        </div>
-                      </span>
-
-                      <span>
-                        <button (click)="addItem(i, j, k, 0)">+</button>
-                      </span>
+                    <div class="top_view mini_grid">
+                      <div (click)="editAction(i, j, k, 0)" class="highlight">
+                        Label : {{ elem.fields[0].label }}
+                      </div>
+                      <div (click)="addKey(i, j, k, 0)" class="highlight">
+                        Key : {{ elem.fields[0].key }}
+                      </div>
                     </div>
                   }
                 </td>
                 <td
                   [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1"
+                  (dblclick)="addItem(i, j, k, 0, 0)"
                   (contextmenu)="toDelete($event, i, j, k, 0, 0)"
                 >
                   @if (elem.fields[0]?.actions?.[0]?.edit) {
@@ -344,10 +339,7 @@
                   } @else {
                     <div class="top_view">
                       <span class="highlight" (click)="editAction(i, j, k, 0, 0)">
-                        {{ elem.fields[0]?.actions?.[0]?.act }}
-                      </span>
-                      <span>
-                        <button (click)="addItem(i, j, k, 0, 0)">+</button>
+                        act : {{ elem.fields[0]?.actions?.[0]?.act }}
                       </span>
                     </div>
                   }
@@ -356,8 +348,12 @@
             }
             @for (field of elem.fields; track $index; let l = $index) {
               @if (!$first) {
-                <tr (contextmenu)="toDelete($event, i, j, k, l)">
-                  <td [attr.rowspan]="field.rowspan">
+                <tr>
+                  <td
+                    [attr.rowspan]="field.rowspan"
+                    (dblclick)="addItem(i, j, k, l)"
+                    (contextmenu)="toDelete($event, i, j, k, l)"
+                  >
                     @if (field.edit) {
                       <label>{{ prevKey }} : </label>
                       <input
@@ -368,24 +364,19 @@
                         (keypress)="keyHandle($event)"
                       />
                     } @else {
-                      <div class="top_view">
-                        <span class="mini_grid">
-                          <div (click)="editAction(i, j, k, l)" class="highlight">
-                            Label : {{ field.label }}
-                          </div>
-                          <div (click)="addKey(i, j, k, l)" class="highlight">
-                            Key : {{ field.key }}
-                          </div>
-                        </span>
-
-                        <span>
-                          <button (click)="addItem(i, j, k, l)">+</button>
-                        </span>
+                      <div class="top_view mini_grid">
+                        <div (click)="editAction(i, j, k, l)" class="highlight">
+                          Label : {{ field.label }}
+                        </div>
+                        <div (click)="addKey(i, j, k, l)" class="highlight">
+                          Key : {{ field.key }}
+                        </div>
                       </div>
                     }
                   </td>
                   <td
                     [attr.rowspan]="field?.actions?.[0]?.act || 1"
+                    (dblclick)="addItem(i, j, k, l, 0)"
                     (contextmenu)="toDelete($event, i, j, k, l, 0)"
                   >
                     @if (field?.actions?.[0]?.edit) {
@@ -400,10 +391,7 @@
                     } @else {
                       <div class="top_view">
                         <span class="highlight" (click)="editAction(i, j, k, l, 0)">
-                          {{ field?.actions?.[0]?.act }}
-                        </span>
-                        <span>
-                          <button (click)="addItem(i, j, k, l, 0)">+</button>
+                          act : {{ field?.actions?.[0]?.act }}
                         </span>
                       </div>
                     }
@@ -413,7 +401,10 @@
               @for (act of field.actions; track $index; let m = $index) {
                 @if (!$first) {
                   <tr>
-                    <td (contextmenu)="toDelete($event, i, j, k, l, m)">
+                    <td
+                      (dblclick)="addItem(i, j, k, l, m)"
+                      (contextmenu)="toDelete($event, i, j, k, l, m)"
+                    >
                       @if (act.edit) {
                         <label>{{ prevKey }} : </label>
                         <input
@@ -426,10 +417,7 @@
                       } @else {
                         <div class="top_view">
                           <span class="highlight" (click)="editAction(i, j, k, l, m)">
-                            {{ act?.act }}
-                          </span>
-                          <span>
-                            <button (click)="addItem(i, j, k, l, m)">+</button>
+                            act : {{ act?.act }}
                           </span>
                         </div>
                       }

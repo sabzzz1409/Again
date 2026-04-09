@@ -342,7 +342,7 @@ export class Page1 {
               key = 'displayName';
             } else {
               this.setTable();
-              if (this.prevKey) this.selectedData[this.prevKey] = this.editData;
+              if (this.prevKey) this.selectedData[this.prevKey] = this.editData?.trim();
               this.selectedData = null;
               this.editData = null;
               key = null;
@@ -425,7 +425,7 @@ export class Page1 {
   private async saveData() {
     try {
       await this.idb.dropTable('modules');
-      await this.idb.create('modules', this.tableRows); 
+      await this.idb.create('modules', this.tableRows);
       console.log('Data saved!');
     } catch (err) {
       console.error('Failed to save data:', err);
@@ -511,5 +511,34 @@ export class Page1 {
   ) {
     event?.preventDefault();
     this.remove(i, j, k, l, m);
+  }
+
+  public readJson(eve: Event) {
+    const eventTarget: HTMLInputElement = eve?.target as HTMLInputElement;
+    if (!eventTarget.files || !eventTarget.files.length) return;
+
+    const file: File = eventTarget.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      try {
+        this.tableRows = JSON.parse(reader.result as string);
+        console.log(reader.result);
+        console.log(this.tableRows);
+
+        this.setTable();
+        this.saveData();
+        this.cdr.detectChanges();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    reader.onerror = () => {
+      console.error('Error reading file');
+    };
+
+    reader.readAsText(file);
   }
 }
