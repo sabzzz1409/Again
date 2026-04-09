@@ -26,10 +26,20 @@
           <td [attr.rowspan]="mod.rowspan" class="txt_ctr">
             {{ $index + 1 }}
           </td>
-          <td [attr.rowspan]="mod.rowspan" [attr.colspan]="mod.submodules.length - 1 ? 1 : 2">
+          <td
+            [attr.rowspan]="mod.rowspan"
+            [attr.colspan]="mod.submodules.length - 1 ? 1 : 2"
+            (contextmenu)="toDelete($event, i)"
+          >
             @if (mod.edit) {
               <label>{{ prevKey }} : </label>
-              <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
+              <input
+                type="text"
+                [(ngModel)]="editData"
+                #editInput
+                (blur)="blurEvent()"
+                (keypress)="keyHandle($event)"
+              />
             } @else {
               <div class="top_view">
                 <span class="mini_grid">
@@ -44,19 +54,19 @@
                   @if (!(mod.submodules.length - 1)) {
                     <button (click)="addItem(i, 0)" title="add submodule">-</button>
                   }
-                  <button (click)="remove(i)">x</button>
                 </span>
               </div>
             }
           </td>
           @if (mod.submodules.length - 1) {
-            <td [attr.rowspan]="mod.submodules[0].rowspan">
+            <td [attr.rowspan]="mod.submodules[0].rowspan" (contextmenu)="toDelete($event, i, 0)">
               @if (mod.submodules[0].edit) {
                 <label>{{ prevKey }} : </label>
                 <input
                   type="text"
                   [(ngModel)]="editData"
                   #editInput
+                  (blur)="blurEvent()"
                   (keypress)="keyHandle($event)"
                 />
               } @else {
@@ -74,16 +84,24 @@
                   </span>
                   <span>
                     <button (click)="addItem(i, 0)">+</button>
-                    <button (click)="remove(i, 0)">x</button>
                   </span>
                 </div>
               }
             </td>
           }
-          <td [attr.rowspan]="mod.submodules[0].elements[0].rowspan">
+          <td
+            [attr.rowspan]="mod.submodules[0].elements[0].rowspan"
+            (contextmenu)="toDelete($event, i, 0, 0)"
+          >
             @if (mod.submodules[0].elements[0].edit) {
               <label>{{ prevKey }} : </label>
-              <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
+              <input
+                type="text"
+                [(ngModel)]="editData"
+                #editInput
+                (blur)="blurEvent()"
+                (keypress)="keyHandle($event)"
+              />
             } @else {
               <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0)">
@@ -91,15 +109,23 @@
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0)">+</button>
-                  <button (click)="remove(i, 0, 0)">x</button>
                 </span>
               </div>
             }
           </td>
-          <td [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan">
+          <td
+            [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan"
+            (contextmenu)="toDelete($event, i, 0, 0, 0)"
+          >
             @if (mod.submodules[0].elements[0].fields[0].edit) {
               <label>{{ prevKey }} : </label>
-              <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
+              <input
+                type="text"
+                [(ngModel)]="editData"
+                #editInput
+                (blur)="blurEvent()"
+                (keypress)="keyHandle($event)"
+              />
             } @else {
               <div class="top_view">
                 <span class="mini_grid">
@@ -113,15 +139,20 @@
 
                 <span>
                   <button (click)="addItem(i, 0, 0, 0)">+</button>
-                  <button (click)="remove(i, 0, 0, 0)">x</button>
                 </span>
               </div>
             }
           </td>
-          <td>
+          <td (contextmenu)="toDelete($event, i, 0, 0, 0, 0)">
             @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.edit) {
               <label>{{ prevKey }} : </label>
-              <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
+              <input
+                type="text"
+                [(ngModel)]="editData"
+                #editInput
+                (blur)="blurEvent()"
+                (keypress)="keyHandle($event)"
+              />
             } @else {
               <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0, 0, 0)">
@@ -129,7 +160,6 @@
                 </span>
                 <span>
                   <button (click)="addItem(i, 0, 0, 0, 0)">+</button>
-                  <button (click)="remove(i, 0, 0, 0, 0)">x</button>
                 </span>
               </div>
             }
@@ -139,13 +169,14 @@
         @for (sub of mod.submodules; track $index; let j = $index) {
           @if (!$first) {
             <tr>
-              <td [attr.rowspan]="sub.rowspan">
+              <td [attr.rowspan]="sub.rowspan" (contextmenu)="toDelete($event, i, j)">
                 @if (sub.edit) {
                   <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
                     #editInput
+                    (blur)="blurEvent()"
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
@@ -159,18 +190,21 @@
                     </span>
                     <span>
                       <button (click)="addItem(i, j)">+</button>
-                      <button (click)="remove(i, j)">x</button>
                     </span>
                   </div>
                 }
               </td>
-              <td [attr.rowspan]="sub.elements[0].rowspan">
+              <td
+                [attr.rowspan]="sub.elements[0].rowspan"
+                (contextmenu)="toDelete($event, i, j, 0)"
+              >
                 @if (sub.elements[0].edit) {
                   <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
                     #editInput
+                    (blur)="blurEvent()"
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
@@ -180,18 +214,21 @@
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0)">+</button>
-                      <button (click)="remove(i, j, 0)">x</button>
                     </span>
                   </div>
                 }
               </td>
-              <td [attr.rowspan]="sub.elements[0].fields[0].rowspan">
+              <td
+                [attr.rowspan]="sub.elements[0].fields[0].rowspan"
+                (contextmenu)="toDelete($event, i, j, 0, 0)"
+              >
                 @if (sub.elements[0].fields[0].edit) {
                   <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
                     #editInput
+                    (blur)="blurEvent()"
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
@@ -207,18 +244,21 @@
 
                     <span>
                       <button (click)="addItem(i, j, 0, 0)">+</button>
-                      <button (click)="remove(i, j, 0, 0)">x</button>
                     </span>
                   </div>
                 }
               </td>
-              <td [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1">
+              <td
+                [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1"
+                (contextmenu)="toDelete($event, i, j, 0, 0, 0)"
+              >
                 @if (sub.elements[0].fields[0]?.actions?.[0]?.edit) {
                   <label>{{ prevKey }} : </label>
                   <input
                     type="text"
                     [(ngModel)]="editData"
                     #editInput
+                    (blur)="blurEvent()"
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
@@ -228,7 +268,6 @@
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0, 0, 0)">+</button>
-                      <button (click)="remove(i, j, 0, 0, 0)">x</button>
                     </span>
                   </div>
                 }
@@ -238,13 +277,14 @@
           @for (elem of sub.elements; track $index; let k = $index) {
             @if (!$first) {
               <tr>
-                <td [attr.rowspan]="elem.rowspan">
+                <td [attr.rowspan]="elem.rowspan" (contextmenu)="toDelete($event, i, j, k)">
                   @if (elem.edit) {
                     <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
                       #editInput
+                      (blur)="blurEvent()"
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
@@ -254,18 +294,21 @@
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k)">+</button>
-                        <button (click)="remove(i, j, k)">x</button>
                       </span>
                     </div>
                   }
                 </td>
-                <td [attr.rowspan]="elem.fields[0].rowspan">
+                <td
+                  [attr.rowspan]="elem.fields[0].rowspan"
+                  (contextmenu)="toDelete($event, i, j, k, 0)"
+                >
                   @if (elem.fields[0].edit) {
                     <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
                       #editInput
+                      (blur)="blurEvent()"
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
@@ -281,18 +324,21 @@
 
                       <span>
                         <button (click)="addItem(i, j, k, 0)">+</button>
-                        <button (click)="remove(i, j, k, 0)">x</button>
                       </span>
                     </div>
                   }
                 </td>
-                <td [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1">
+                <td
+                  [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1"
+                  (contextmenu)="toDelete($event, i, j, k, 0, 0)"
+                >
                   @if (elem.fields[0]?.actions?.[0]?.edit) {
                     <label>{{ prevKey }} : </label>
                     <input
                       type="text"
                       [(ngModel)]="editData"
                       #editInput
+                      (blur)="blurEvent()"
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
@@ -302,7 +348,6 @@
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k, 0, 0)">+</button>
-                        <button (click)="remove(i, j, k, 0, 0)">x</button>
                       </span>
                     </div>
                   }
@@ -311,7 +356,7 @@
             }
             @for (field of elem.fields; track $index; let l = $index) {
               @if (!$first) {
-                <tr>
+                <tr (contextmenu)="toDelete($event, i, j, k, l)">
                   <td [attr.rowspan]="field.rowspan">
                     @if (field.edit) {
                       <label>{{ prevKey }} : </label>
@@ -319,6 +364,7 @@
                         type="text"
                         [(ngModel)]="editData"
                         #editInput
+                        (blur)="blurEvent()"
                         (keypress)="keyHandle($event)"
                       />
                     } @else {
@@ -334,18 +380,21 @@
 
                         <span>
                           <button (click)="addItem(i, j, k, l)">+</button>
-                          <button (click)="remove(i, j, k, l)">x</button>
                         </span>
                       </div>
                     }
                   </td>
-                  <td [attr.rowspan]="field?.actions?.[0]?.act || 1">
+                  <td
+                    [attr.rowspan]="field?.actions?.[0]?.act || 1"
+                    (contextmenu)="toDelete($event, i, j, k, l, 0)"
+                  >
                     @if (field?.actions?.[0]?.edit) {
                       <label>{{ prevKey }} : </label>
                       <input
                         type="text"
                         [(ngModel)]="editData"
                         #editInput
+                        (blur)="blurEvent()"
                         (keypress)="keyHandle($event)"
                       />
                     } @else {
@@ -355,7 +404,6 @@
                         </span>
                         <span>
                           <button (click)="addItem(i, j, k, l, 0)">+</button>
-                          <button (click)="remove(i, j, k, l, 0)">x</button>
                         </span>
                       </div>
                     }
@@ -365,13 +413,14 @@
               @for (act of field.actions; track $index; let m = $index) {
                 @if (!$first) {
                   <tr>
-                    <td>
+                    <td (contextmenu)="toDelete($event, i, j, k, l, m)">
                       @if (act.edit) {
                         <label>{{ prevKey }} : </label>
                         <input
                           type="text"
                           [(ngModel)]="editData"
                           #editInput
+                          (blur)="blurEvent()"
                           (keypress)="keyHandle($event)"
                         />
                       } @else {
@@ -381,7 +430,6 @@
                           </span>
                           <span>
                             <button (click)="addItem(i, j, k, l, m)">+</button>
-                            <button (click)="remove(i, j, k, l, m)">x</button>
                           </span>
                         </div>
                       }

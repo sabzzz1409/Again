@@ -368,20 +368,34 @@ export class Page1 {
     }
   }
 
+  public blurEvent() {
+    this.editAction();
+    this.idb.dropTable('modules');
+    this.saveData();
+  }
+
   // delete data D
   public remove(i = -1, j = -1, k = -1, l = -1, m = -1) {
-    const confRes: Boolean = confirm('are you sure to delete?');
-
-    if (!confRes) return;
-
-    this.setTable();
-
     // console.log(i, j, k, l, m);
     const module: IModule | null = i > -1 ? this.tableRows[i] : null;
     const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
     const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
     const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
     const action: Iaction | null | undefined = m > -1 ? field?.actions[m] : null;
+
+    const confRes: Boolean = confirm(
+      `are you sure to delete ${
+        action?.act ||
+        field?.label ||
+        element?.type ||
+        submodule?.displayName ||
+        module?.displayName
+      }?`,
+    );
+
+    if (!confRes) return;
+
+    this.setTable();
 
     if (action && field && field.actions.length - 1) {
       field.actions.splice(m, 1);
@@ -411,7 +425,7 @@ export class Page1 {
   private async saveData() {
     try {
       await this.idb.dropTable('modules');
-      await this.idb.create('modules', this.tableRows); // auto-creates table if missing
+      await this.idb.create('modules', this.tableRows); 
       console.log('Data saved!');
     } catch (err) {
       console.error('Failed to save data:', err);
@@ -421,6 +435,17 @@ export class Page1 {
   // post
   public register() {
     console.log(this.tableRows);
+    const fileName: string = prompt('name your JSON', 'default') || 'default';
+    const dataStr: string = JSON.stringify(this.tableRows, null, 2);
+    const blobData: Blob = new Blob([dataStr], { type: 'application/json' });
+    const url: string = window.URL.createObjectURL(blobData);
+    const a: HTMLAnchorElement = document.createElement('a');
+    a.href = url;
+    a.download = fileName + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 
   public addRoute(i: number = -1, j: number = -1) {
@@ -474,5 +499,17 @@ export class Page1 {
     field.edit = true;
     this.prevKey = 'key';
     this.editData = field.key;
+  }
+
+  public toDelete(
+    eve: MouseEvent,
+    i: number = -1,
+    j: number = -1,
+    k: number = -1,
+    l: number = -1,
+    m: number = -1,
+  ) {
+    event?.preventDefault();
+    this.remove(i, j, k, l, m);
   }
 }

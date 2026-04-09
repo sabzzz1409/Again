@@ -1,6 +1,6 @@
 .top_view {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   width: 90%;
   margin: auto;
 }
@@ -26,8 +26,10 @@ table {
   margin: auto;
 }
 
-th {
-  padding: 6px 2px;
+.addModules:hover {
+  transition: all ease 0.5s;
+  cursor: pointer;
+  background-color: lightblue;
 }
 
 th,
@@ -62,10 +64,4 @@ td {
   td {
     white-space: nowrap;
   }
-}
-
-.addModules:hover {
-  transition: all ease 0.5s;
-  cursor: pointer;
-  background-color: lightblue;
 }
