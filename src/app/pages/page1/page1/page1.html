@@ -1,5 +1,5 @@
 <p>page1 works!</p>
-<div style="display: flex; justify-content: end; width: 90%; margin: auto">
+<div class="top_view">
   <button (click)="register()">Post Model</button>
 </div>
 <div class="main_table">
@@ -23,7 +23,7 @@
     <tbody>
       @for (mod of tableRows; track $index; let i = $index) {
         <tr>
-          <td [attr.rowspan]="mod.rowspan" style="text-align: center">
+          <td [attr.rowspan]="mod.rowspan" class="txt_ctr">
             {{ $index + 1 }}
           </td>
           <td [attr.rowspan]="mod.rowspan" [attr.colspan]="mod.submodules.length - 1 ? 1 : 2">
@@ -31,8 +31,8 @@
               <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
-              <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 60px; display: grid; gap: 2px">
+              <div class="top_view">
+                <span class="mini_grid">
                   <div class="highlight" (click)="editAction(i)">
                     Display Name : {{ mod.displayName }}
                   </div>
@@ -60,10 +60,8 @@
                   (keypress)="keyHandle($event)"
                 />
               } @else {
-                <div
-                  style="display: flex; justify-content: space-between; width: 90%; margin: auto"
-                >
-                  <span style="min-width: 60px; display: grid; gap: 2px">
+                <div class="">
+                  <span class="mini_grid">
                     <div class="highlight" (click)="editAction(i, 0)">
                       Display Name : {{ mod.submodules[0].displayName }}
                     </div>
@@ -87,7 +85,7 @@
               <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
-              <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
+              <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0)">
                   {{ mod.submodules[0].elements[0].type }}
                 </span>
@@ -103,17 +101,16 @@
               <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
-              <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span style="min-width: 60px">
-                  <span style="min-width: 60px; display: grid; gap: 2px">
-                    <div (click)="editAction(i, 0, 0, 0)" class="highlight">
-                      Label : {{ mod.submodules[0].elements[0].fields[0].label }}
-                    </div>
-                    <div (click)="addKey(i, 0, 0, 0)" class="highlight">
-                      Key : {{ mod.submodules[0].elements[0].fields[0].key }}
-                    </div>
-                  </span>
+              <div class="top_view">
+                <span class="mini_grid">
+                  <div (click)="editAction(i, 0, 0, 0)" class="highlight">
+                    Label : {{ mod.submodules[0].elements[0].fields[0].label }}
+                  </div>
+                  <div (click)="addKey(i, 0, 0, 0)" class="highlight">
+                    Key : {{ mod.submodules[0].elements[0].fields[0].key }}
+                  </div>
                 </span>
+
                 <span>
                   <button (click)="addItem(i, 0, 0, 0)">+</button>
                   <button (click)="remove(i, 0, 0, 0)">x</button>
@@ -126,7 +123,7 @@
               <label>{{ prevKey }} : </label>
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
-              <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
+              <div class="top_view">
                 <span class="highlight" (click)="editAction(i, 0, 0, 0, 0)">
                   {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
                 </span>
@@ -152,10 +149,8 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div
-                    style="display: flex; justify-content: space-between; width: 90%; margin: auto"
-                  >
-                    <span style="min-width: 60px; display: grid; gap: 2px">
+                  <div class="top_view">
+                    <span class="mini_grid">
                       <div class="highlight" (click)="editAction(i, j)">
                         Display Name : {{ sub.displayName }}
                       </div>
@@ -179,9 +174,7 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div
-                    style="display: flex; justify-content: space-between; width: 90%; margin: auto"
-                  >
+                  <div class="top_view">
                     <span class="highlight" (click)="editAction(i, j, 0)">
                       {{ sub.elements[0].type }}
                     </span>
@@ -202,19 +195,16 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div
-                    style="display: flex; justify-content: space-between; width: 90%; margin: auto"
-                  >
-                    <span style="min-width: 60px">
-                      <span style="min-width: 60px; display: grid; gap: 2px">
-                        <div (click)="editAction(i, j, 0, 0)" class="highlight">
-                          Label : {{ sub.elements[0].fields[0].label }}
-                        </div>
-                        <div (click)="addKey(i, j, 0, 0)" class="highlight">
-                          Key : {{ sub.elements[0].fields[0].key }}
-                        </div>
-                      </span>
+                  <div class="top_view">
+                    <span class="mini_grid">
+                      <div (click)="editAction(i, j, 0, 0)" class="highlight">
+                        Label : {{ sub.elements[0].fields[0].label }}
+                      </div>
+                      <div (click)="addKey(i, j, 0, 0)" class="highlight">
+                        Key : {{ sub.elements[0].fields[0].key }}
+                      </div>
                     </span>
+
                     <span>
                       <button (click)="addItem(i, j, 0, 0)">+</button>
                       <button (click)="remove(i, j, 0, 0)">x</button>
@@ -232,9 +222,7 @@
                     (keypress)="keyHandle($event)"
                   />
                 } @else {
-                  <div
-                    style="display: flex; justify-content: space-between; width: 90%; margin: auto"
-                  >
+                  <div class="top_view">
                     <span class="highlight" (click)="editAction(i, j, 0, 0, 0)">
                       {{ sub.elements[0].fields[0]?.actions?.[0]?.act }}
                     </span>
@@ -260,14 +248,7 @@
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: space-between;
-                        width: 90%;
-                        margin: auto;
-                      "
-                    >
+                    <div class="top_view">
                       <span class="highlight" (click)="editAction(i, j, k)">
                         {{ elem.type }}
                       </span>
@@ -288,24 +269,16 @@
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: space-between;
-                        width: 90%;
-                        margin: auto;
-                      "
-                    >
-                      <span style="min-width: 60px">
-                        <span style="min-width: 60px; display: grid; gap: 2px">
-                          <div (click)="editAction(i, j, k, 0)" class="highlight">
-                            Label : {{ elem.fields[0].label }}
-                          </div>
-                          <div (click)="addKey(i, j, k, 0)" class="highlight">
-                            Key : {{ elem.fields[0].key }}
-                          </div>
-                        </span>
+                    <div class="top_view">
+                      <span class="mini_grid">
+                        <div (click)="editAction(i, j, k, 0)" class="highlight">
+                          Label : {{ elem.fields[0].label }}
+                        </div>
+                        <div (click)="addKey(i, j, k, 0)" class="highlight">
+                          Key : {{ elem.fields[0].key }}
+                        </div>
                       </span>
+
                       <span>
                         <button (click)="addItem(i, j, k, 0)">+</button>
                         <button (click)="remove(i, j, k, 0)">x</button>
@@ -323,14 +296,7 @@
                       (keypress)="keyHandle($event)"
                     />
                   } @else {
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: space-between;
-                        width: 90%;
-                        margin: auto;
-                      "
-                    >
+                    <div class="top_view">
                       <span class="highlight" (click)="editAction(i, j, k, 0, 0)">
                         {{ elem.fields[0]?.actions?.[0]?.act }}
                       </span>
@@ -356,24 +322,16 @@
                         (keypress)="keyHandle($event)"
                       />
                     } @else {
-                      <div
-                        style="
-                          display: flex;
-                          justify-content: space-between;
-                          width: 90%;
-                          margin: auto;
-                        "
-                      >
-                        <span style="min-width: 60px">
-                          <span style="min-width: 60px; display: grid; gap: 2px">
-                            <div (click)="editAction(i, j, k, l)" class="highlight">
-                              Label : {{ field.label }}
-                            </div>
-                            <div (click)="addKey(i, j, k, l)" class="highlight">
-                              Key : {{ field.key }}
-                            </div>
-                          </span>
+                      <div class="top_view">
+                        <span class="mini_grid">
+                          <div (click)="editAction(i, j, k, l)" class="highlight">
+                            Label : {{ field.label }}
+                          </div>
+                          <div (click)="addKey(i, j, k, l)" class="highlight">
+                            Key : {{ field.key }}
+                          </div>
                         </span>
+
                         <span>
                           <button (click)="addItem(i, j, k, l)">+</button>
                           <button (click)="remove(i, j, k, l)">x</button>
@@ -391,14 +349,7 @@
                         (keypress)="keyHandle($event)"
                       />
                     } @else {
-                      <div
-                        style="
-                          display: flex;
-                          justify-content: space-between;
-                          width: 90%;
-                          margin: auto;
-                        "
-                      >
+                      <div class="top_view">
                         <span class="highlight" (click)="editAction(i, j, k, l, 0)">
                           {{ field?.actions?.[0]?.act }}
                         </span>
@@ -424,14 +375,7 @@
                           (keypress)="keyHandle($event)"
                         />
                       } @else {
-                        <div
-                          style="
-                            display: flex;
-                            justify-content: space-between;
-                            width: 90%;
-                            margin: auto;
-                          "
-                        >
+                        <div class="top_view">
                           <span class="highlight" (click)="editAction(i, j, k, l, m)">
                             {{ act?.act }}
                           </span>
