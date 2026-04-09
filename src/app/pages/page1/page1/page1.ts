@@ -370,6 +370,10 @@ export class Page1 {
 
   // delete data D
   public remove(i = -1, j = -1, k = -1, l = -1, m = -1) {
+    const confRes: Boolean = confirm('are you sure to delete?');
+
+    if (!confRes) return;
+
     this.setTable();
 
     // console.log(i, j, k, l, m);

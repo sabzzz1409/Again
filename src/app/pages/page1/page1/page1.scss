@@ -17,12 +17,16 @@ th,
 td {
   border: 1px solid black;
   padding: 8px 4px;
-  
 }
 
-td div{
+.highlight {
+  min-width: 60px;
+  background-color: lightgray;
   padding: 2px 10px;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* MOBILE FIX */
@@ -41,4 +45,10 @@ td div{
   td {
     white-space: nowrap;
   }
+}
+
+.addModules:hover {
+  transition: all ease 0.5s;
+  cursor: pointer;
+  background-color: lightblue;
 }

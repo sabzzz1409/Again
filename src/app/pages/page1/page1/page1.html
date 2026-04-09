@@ -7,11 +7,12 @@
     <thead>
       <tr>
         <th>S.No</th>
-        <th>
+        <th
+          (click)="addItem(tableRows.length ? tableRows.length - 1 : 0)"
+          class="addModules"
+          title="Add New Module"
+        >
           Main Modules
-          <button (click)="addItem(tableRows.length ? tableRows.length - 1 : 0)" title="add module">
-            +
-          </button>
         </th>
         <th>Sub Modules</th>
         <th>Elements</th>
@@ -32,21 +33,14 @@
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
                 <span style="min-width: 60px; display: grid; gap: 2px">
-                  <div style="background-color: lightgray" (click)="editAction(i)">
+                  <div class="highlight" (click)="editAction(i)">
                     Display Name : {{ mod.displayName }}
                   </div>
-                  <div style="background-color: lightgray" (click)="addIcon(i)">
-                    Icon : {{ mod.iconName }}
-                  </div>
-                  <div style="background-color: lightgray" (click)="addRoute(i)">
-                    Route : {{ mod.route }}
-                  </div>
+                  <div class="highlight" (click)="addIcon(i)">Icon : {{ mod.iconName }}</div>
+                  <div class="highlight" (click)="addRoute(i)">Route : {{ mod.route }}</div>
                 </span>
                 <span>
                   <button (click)="addItem(i)" title="add module">+</button>
-                  <!-- <button (click)="addIcon(i)" title="add icon">*</button>
-                  <button (click)="addRoute(i)" title="add route">=</button> -->
-
                   @if (!(mod.submodules.length - 1)) {
                     <button (click)="addItem(i, 0)" title="add submodule">-</button>
                   }
@@ -70,20 +64,18 @@
                   style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                 >
                   <span style="min-width: 60px; display: grid; gap: 2px">
-                    <div style="background-color: lightgray" (click)="editAction(i, 0)">
+                    <div class="highlight" (click)="editAction(i, 0)">
                       Display Name : {{ mod.submodules[0].displayName }}
                     </div>
-                    <div style="background-color: lightgray" (click)="addIcon(i, 0)">
+                    <div class="highlight" (click)="addIcon(i, 0)">
                       Icon : {{ mod.submodules[0].iconName }}
                     </div>
-                    <div style="background-color: lightgray" (click)="addRoute(i, 0)">
+                    <div class="highlight" (click)="addRoute(i, 0)">
                       Route : {{ mod.submodules[0].route }}
                     </div>
                   </span>
                   <span>
                     <button (click)="addItem(i, 0)">+</button>
-                    <!-- <button (click)="addIcon(i, 0)" title="add icon">*</button>
-                    <button (click)="addRoute(i, 0)" title="add route">=</button> -->
                     <button (click)="remove(i, 0)">x</button>
                   </span>
                 </div>
@@ -96,10 +88,7 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span
-                  style="min-width: 60px; background-color: lightgray"
-                  (click)="editAction(i, 0, 0)"
-                >
+                <span class="highlight" (click)="editAction(i, 0, 0)">
                   {{ mod.submodules[0].elements[0].type }}
                 </span>
                 <span>
@@ -116,11 +105,11 @@
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
                 <span style="min-width: 60px">
-                  <span style="min-width: 60px; background-color: lightgray; display: grid">
-                    <div (click)="editAction(i, 0, 0, 0)">
+                  <span style="min-width: 60px; display: grid; gap: 2px">
+                    <div (click)="editAction(i, 0, 0, 0)" class="highlight">
                       Label : {{ mod.submodules[0].elements[0].fields[0].label }}
                     </div>
-                    <div (click)="addKey(i, 0, 0, 0)">
+                    <div (click)="addKey(i, 0, 0, 0)" class="highlight">
                       Key : {{ mod.submodules[0].elements[0].fields[0].key }}
                     </div>
                   </span>
@@ -138,10 +127,7 @@
               <input type="text" [(ngModel)]="editData" #editInput (keypress)="keyHandle($event)" />
             } @else {
               <div style="display: flex; justify-content: space-between; width: 90%; margin: auto">
-                <span
-                  style="min-width: 60px; background-color: lightgray"
-                  (click)="editAction(i, 0, 0, 0, 0)"
-                >
+                <span class="highlight" (click)="editAction(i, 0, 0, 0, 0)">
                   {{ mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.act }}
                 </span>
                 <span>
@@ -170,20 +156,14 @@
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
                     <span style="min-width: 60px; display: grid; gap: 2px">
-                      <div style="background-color: lightgray" (click)="editAction(i, j)">
+                      <div class="highlight" (click)="editAction(i, j)">
                         Display Name : {{ sub.displayName }}
                       </div>
-                      <div style="background-color: lightgray" (click)="addIcon(i, j)">
-                        Icon : {{ sub.iconName }}
-                      </div>
-                      <div style="background-color: lightgray" (click)="addRoute(i, j)">
-                        Route : {{ sub.route }}
-                      </div>
+                      <div class="highlight" (click)="addIcon(i, j)">Icon : {{ sub.iconName }}</div>
+                      <div class="highlight" (click)="addRoute(i, j)">Route : {{ sub.route }}</div>
                     </span>
                     <span>
                       <button (click)="addItem(i, j)">+</button>
-                      <!-- <button (click)="addIcon(i, j)" title="add icon">*</button>
-                      <button (click)="addRoute(i, j)" title="add route">=</button> -->
                       <button (click)="remove(i, j)">x</button>
                     </span>
                   </div>
@@ -202,10 +182,7 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span
-                      style="min-width: 60px; background-color: lightgray"
-                      (click)="editAction(i, j, 0)"
-                    >
+                    <span class="highlight" (click)="editAction(i, j, 0)">
                       {{ sub.elements[0].type }}
                     </span>
                     <span>
@@ -229,11 +206,11 @@
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
                     <span style="min-width: 60px">
-                      <span style="min-width: 60px; background-color: lightgray; display: grid">
-                        <div (click)="editAction(i, j, 0, 0)">
+                      <span style="min-width: 60px; display: grid; gap: 2px">
+                        <div (click)="editAction(i, j, 0, 0)" class="highlight">
                           Label : {{ sub.elements[0].fields[0].label }}
                         </div>
-                        <div (click)="addKey(i, j, 0, 0)">
+                        <div (click)="addKey(i, j, 0, 0)" class="highlight">
                           Key : {{ sub.elements[0].fields[0].key }}
                         </div>
                       </span>
@@ -258,11 +235,8 @@
                   <div
                     style="display: flex; justify-content: space-between; width: 90%; margin: auto"
                   >
-                    <span
-                      style="min-width: 60px; background-color: lightgray"
-                      (click)="editAction(i, j, 0, 0, 0)"
-                    >
-                      {{ sub.elements[0].fields[0]?.actions?.[0]?.act || '-' }}
+                    <span class="highlight" (click)="editAction(i, j, 0, 0, 0)">
+                      {{ sub.elements[0].fields[0]?.actions?.[0]?.act }}
                     </span>
                     <span>
                       <button (click)="addItem(i, j, 0, 0, 0)">+</button>
@@ -294,10 +268,7 @@
                         margin: auto;
                       "
                     >
-                      <span
-                        style="min-width: 60px; background-color: lightgray"
-                        (click)="editAction(i, j, k)"
-                      >
+                      <span class="highlight" (click)="editAction(i, j, k)">
                         {{ elem.type }}
                       </span>
                       <span>
@@ -326,11 +297,13 @@
                       "
                     >
                       <span style="min-width: 60px">
-                        <span style="min-width: 60px; background-color: lightgray; display: grid">
-                          <div (click)="editAction(i, j, k, 0)">
+                        <span style="min-width: 60px; display: grid; gap: 2px">
+                          <div (click)="editAction(i, j, k, 0)" class="highlight">
                             Label : {{ elem.fields[0].label }}
                           </div>
-                          <div (click)="addKey(i, j, k, 0)">Key : {{ elem.fields[0].key }}</div>
+                          <div (click)="addKey(i, j, k, 0)" class="highlight">
+                            Key : {{ elem.fields[0].key }}
+                          </div>
                         </span>
                       </span>
                       <span>
@@ -358,11 +331,8 @@
                         margin: auto;
                       "
                     >
-                      <span
-                        style="min-width: 60px; background-color: lightgray"
-                        (click)="editAction(i, j, k, 0, 0)"
-                      >
-                        {{ elem.fields[0]?.actions?.[0]?.act || '-' }}
+                      <span class="highlight" (click)="editAction(i, j, k, 0, 0)">
+                        {{ elem.fields[0]?.actions?.[0]?.act }}
                       </span>
                       <span>
                         <button (click)="addItem(i, j, k, 0, 0)">+</button>
@@ -395,9 +365,13 @@
                         "
                       >
                         <span style="min-width: 60px">
-                          <span style="min-width: 60px; background-color: lightgray; display: grid">
-                            <div (click)="editAction(i, j, k, l)">Label : {{ field.label }}</div>
-                            <div (click)="addKey(i, j, k, l)">Key : {{ field.key }}</div>
+                          <span style="min-width: 60px; display: grid; gap: 2px">
+                            <div (click)="editAction(i, j, k, l)" class="highlight">
+                              Label : {{ field.label }}
+                            </div>
+                            <div (click)="addKey(i, j, k, l)" class="highlight">
+                              Key : {{ field.key }}
+                            </div>
                           </span>
                         </span>
                         <span>
@@ -425,11 +399,8 @@
                           margin: auto;
                         "
                       >
-                        <span
-                          style="min-width: 60px; background-color: lightgray"
-                          (click)="editAction(i, j, k, l, 0)"
-                        >
-                          {{ field?.actions?.[0]?.act || '--' }}
+                        <span class="highlight" (click)="editAction(i, j, k, l, 0)">
+                          {{ field?.actions?.[0]?.act }}
                         </span>
                         <span>
                           <button (click)="addItem(i, j, k, l, 0)">+</button>
@@ -461,11 +432,8 @@
                             margin: auto;
                           "
                         >
-                          <span
-                            style="min-width: 60px; background-color: lightgray"
-                            (click)="editAction(i, j, k, l, m)"
-                          >
-                            {{ act?.act || '---' }}
+                          <span class="highlight" (click)="editAction(i, j, k, l, m)">
+                            {{ act?.act }}
                           </span>
                           <span>
                             <button (click)="addItem(i, j, k, l, m)">+</button>
