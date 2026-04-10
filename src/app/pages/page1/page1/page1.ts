@@ -269,9 +269,9 @@ export class Page1 {
   // render table read data R
   private setTable() {
     this.tableRows.forEach((piece: IModule) => {
-      piece.submodules.forEach((part: IsubModule) => {
-        part.elements.forEach((pack: Ielement) => {
-          pack.fields.forEach((parcel: Ifield) => {
+      piece?.submodules.forEach((part: IsubModule) => {
+        part?.elements.forEach((pack: Ielement) => {
+          pack?.fields.forEach((parcel: Ifield) => {
             parcel?.actions?.forEach((perk: Iaction) => {
               perk.edit = false;
             });
@@ -619,17 +619,37 @@ export class Page1 {
     console.log(eve, i, j, k, l, m);
 
     if (module) {
-      const targetIndex = dir ? i - 1 : i + 1;
-
-      const temp = this.tableRows[i];
-      this.tableRows[i] = this.tableRows[targetIndex];
-      this.tableRows[targetIndex] = temp;
       if (submodule) {
+        if (element) {
+          if (field) {
+            if (action) {
+              const targetIndex = dir ? m - 1 : m + 1;
+              const temp = field.actions[m];
+              field.actions[m] = field.actions[targetIndex];
+              field.actions[targetIndex] = temp;
+            } else {
+              const targetIndex = dir ? l - 1 : l + 1;
+              const temp = element.fields[l];
+              element.fields[l] = element.fields[targetIndex];
+              element.fields[targetIndex] = temp;
+            }
+          } else {
+            const targetIndex = dir ? k - 1 : k + 1;
+            const temp = submodule.elements[k];
+            submodule.elements[k] = submodule.elements[targetIndex];
+            submodule.elements[targetIndex] = temp;
+          }
+        } else {
+          const targetIndex = dir ? j - 1 : j + 1;
+          const temp = module.submodules[j];
+          module.submodules[j] = module.submodules[targetIndex];
+          module.submodules[targetIndex] = temp;
+        }
+      } else {
         const targetIndex = dir ? i - 1 : i + 1;
-
-        const temp = module.submodules[i];
-        // module.submodules[i] = module.submodules[targetIndex];
-        module.submodules[targetIndex] = temp;
+        const temp = this.tableRows[i];
+        this.tableRows[i] = this.tableRows[targetIndex];
+        this.tableRows[targetIndex] = temp;
       }
     }
 

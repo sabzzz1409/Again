@@ -1,0 +1,302 @@
+[
+  {
+    "displayName": "Access",
+    "edit": false,
+    "type": "main",
+    "route": "/access",
+    "iconName": "",
+    "submodules": [
+      {
+        "displayName": "Users",
+        "route": "/access/users",
+        "iconName": "",
+        "elements": [
+          {
+            "type": "closing form + table",
+            "fields": [
+              {
+                "label": "",
+                "key": "",
+                "actions": [
+                  {
+                    "edit": false
+                  }
+                ],
+                "rowspan": 1,
+                "edit": false
+              }
+            ],
+            "rowspan": 1,
+            "edit": false
+          }
+        ],
+        "rowspan": 1,
+        "edit": false
+      },
+      {
+        "edit": false,
+        "displayName": "Roles",
+        "route": "/access/roles",
+        "iconName": "",
+        "elements": [
+          {
+            "type": "closing from+ table",
+            "fields": [
+              {
+                "label": "S.No",
+                "key": "sno",
+                "actions": [
+                  {
+                    "edit": false
+                  }
+                ],
+                "rowspan": 1,
+                "edit": false
+              },
+              {
+                "label": "Role",
+                "key": "role",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false
+                  }
+                ],
+                "rowspan": 1
+              },
+              {
+                "label": "Actions",
+                "key": "action",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false
+                  }
+                ],
+                "rowspan": 1
+              }
+            ],
+            "rowspan": 3,
+            "edit": false
+          }
+        ],
+        "rowspan": 3
+      },
+      {
+        "edit": false,
+        "displayName": "Permissions",
+        "route": "/access/permissions",
+        "iconName": "",
+        "elements": [
+          {
+            "type": "permissions table",
+            "fields": [
+              {
+                "label": "Role",
+                "key": "role",
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "single select"
+                  },
+                  {
+                    "act": "api.",
+                    "edit": false
+                  },
+                  {
+                    "act": "checkbox check",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3,
+                "edit": false
+              },
+              {
+                "label": "User",
+                "key": "user",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "single select"
+                  },
+                  {
+                    "act": "api.",
+                    "edit": false
+                  },
+                  {
+                    "act": "checkbox check",
+                    "edit": false
+                  },
+                  {
+                    "act": "dep role",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 4
+              },
+              {
+                "label": "S.No",
+                "key": "$index+1",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "td.click.addNewModule.next"
+                  }
+                ],
+                "rowspan": 1
+              },
+              {
+                "label": "Main Modules",
+                "key": "modules",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "th.click.addNewModule.last"
+                  },
+                  {
+                    "act": "td.dbclick.addNewSubModule.0",
+                    "edit": false
+                  },
+                  {
+                    "act": "td.rightclick.deleteModule",
+                    "edit": false
+                  },
+                  {
+                    "act": "td.wheel.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 4
+              },
+              {
+                "label": "SubModules",
+                "key": "submodules",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "td.dbclick.addNewSubModule.next"
+                  },
+                  {
+                    "act": "td.rightclick.deleteSubModule",
+                    "edit": false
+                  },
+                  {
+                    "act": "td.wheel.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3
+              },
+              {
+                "label": "Elements",
+                "key": "elements",
+                "edit": false,
+                "actions": [
+                  {
+                    "act": "td.dbclick.addNewElements.next",
+                    "edit": false
+                  },
+                  {
+                    "edit": false,
+                    "act": "td.rightclick.deleteElements"
+                  },
+                  {
+                    "act": "td.wheel.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3
+              },
+              {
+                "label": "Fields",
+                "key": "fields",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "td.dbclick.addNewFields.next"
+                  },
+                  {
+                    "act": "td.rightclick.deleteFields",
+                    "edit": false
+                  },
+                  {
+                    "act": "td.wheel.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3
+              },
+              {
+                "label": "Actions",
+                "key": "actions",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "td.dbclick.addNewActions.next"
+                  },
+                  {
+                    "act": "td.rightclick.deleteActions",
+                    "edit": false
+                  },
+                  {
+                    "act": "td.wheel.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3
+              }
+            ],
+            "rowspan": 24,
+            "edit": false
+          },
+          {
+            "edit": false,
+            "type": "download button",
+            "fields": [
+              {
+                "label": "Post Model",
+                "key": "-",
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "download json"
+                  }
+                ],
+                "rowspan": 1,
+                "edit": false
+              }
+            ],
+            "rowspan": 1
+          },
+          {
+            "edit": false,
+            "type": "upload button",
+            "fields": [
+              {
+                "label": "Upload Model",
+                "key": "-",
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "upload json"
+                  }
+                ],
+                "rowspan": 1,
+                "edit": false
+              }
+            ],
+            "rowspan": 1
+          }
+        ],
+        "rowspan": 26
+      }
+    ],
+    "rowspan": 30
+  }
+]
