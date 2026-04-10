@@ -53,6 +53,7 @@
             {{ $index + 1 }}
           </td>
           <td
+            (wheel)="reArrange($event, i)"
             [attr.rowspan]="mod.rowspan"
             [attr.colspan]="mod.submodules.length - 1 ? 1 : 2"
             (contextmenu)="toDelete($event, i)"
@@ -79,6 +80,7 @@
           </td>
           @if (mod.submodules.length - 1) {
             <td
+              (wheel)="reArrange($event, i, 0)"
               [attr.rowspan]="mod.submodules[0].rowspan"
               (contextmenu)="toDelete($event, i, 0)"
               (dblclick)="addItem(i, 0)"
@@ -108,6 +110,7 @@
             </td>
           }
           <td
+            (wheel)="reArrange($event, i, 0, 0)"
             [attr.rowspan]="mod.submodules[0].elements[0].rowspan"
             (contextmenu)="toDelete($event, i, 0, 0)"
             (dblclick)="addItem(i, 0, 0)"
@@ -130,6 +133,7 @@
             }
           </td>
           <td
+            (wheel)="reArrange($event, i, 0, 0, 0)"
             [attr.rowspan]="mod.submodules[0].elements[0].fields[0].rowspan"
             (contextmenu)="toDelete($event, i, 0, 0, 0)"
             (dblclick)="addItem(i, 0, 0, 0)"
@@ -154,7 +158,11 @@
               </div>
             }
           </td>
-          <td (contextmenu)="toDelete($event, i, 0, 0, 0, 0)" (dblclick)="addItem(i, 0, 0, 0, 0)">
+          <td
+            (wheel)="reArrange($event, i, 0, 0, 0, 0)"
+            (contextmenu)="toDelete($event, i, 0, 0, 0, 0)"
+            (dblclick)="addItem(i, 0, 0, 0, 0)"
+          >
             @if (mod.submodules[0].elements[0].fields[0]?.actions?.[0]?.edit) {
               <label>{{ prevKey }} : </label>
               <input
@@ -178,6 +186,7 @@
           @if (!$first) {
             <tr>
               <td
+                (wheel)="reArrange($event, i, j)"
                 [attr.rowspan]="sub.rowspan"
                 (dblclick)="addItem(i, j)"
                 (contextmenu)="toDelete($event, i, j)"
@@ -202,6 +211,7 @@
                 }
               </td>
               <td
+                (wheel)="reArrange($event, i, j, 0)"
                 [attr.rowspan]="sub.elements[0].rowspan"
                 (dblclick)="addItem(i, j, 0)"
                 (contextmenu)="toDelete($event, i, j, 0)"
@@ -224,6 +234,7 @@
                 }
               </td>
               <td
+                (wheel)="reArrange($event, i, j, 0, 0)"
                 [attr.rowspan]="sub.elements[0].fields[0].rowspan"
                 (dblclick)="addItem(i, j, 0, 0)"
                 (contextmenu)="toDelete($event, i, j, 0, 0)"
@@ -249,6 +260,7 @@
                 }
               </td>
               <td
+                (wheel)="reArrange($event, i, j, 0, 0, 0)"
                 [attr.rowspan]="sub.elements[0].fields[0]?.actions?.[0]?.rowspan || 1"
                 (dblclick)="addItem(i, j, 0, 0, 0)"
                 (contextmenu)="toDelete($event, i, j, 0, 0, 0)"
@@ -276,6 +288,7 @@
             @if (!$first) {
               <tr>
                 <td
+                  (wheel)="reArrange($event, i, j, k)"
                   [attr.rowspan]="elem.rowspan"
                   (dblclick)="addItem(i, j, k)"
                   (contextmenu)="toDelete($event, i, j, k)"
@@ -298,6 +311,7 @@
                   }
                 </td>
                 <td
+                  (wheel)="reArrange($event, i, j, k, 0)"
                   [attr.rowspan]="elem.fields[0].rowspan"
                   (dblclick)="addItem(i, j, k, 0)"
                   (contextmenu)="toDelete($event, i, j, k, 0)"
@@ -323,6 +337,7 @@
                   }
                 </td>
                 <td
+                  (wheel)="reArrange($event, i, j, k, 0, 0)"
                   [attr.rowspan]="elem.fields[0]?.actions?.[0]?.rowspan || 1"
                   (dblclick)="addItem(i, j, k, 0, 0)"
                   (contextmenu)="toDelete($event, i, j, k, 0, 0)"
@@ -350,6 +365,7 @@
               @if (!$first) {
                 <tr>
                   <td
+                    (wheel)="reArrange($event, i, j, k, l)"
                     [attr.rowspan]="field.rowspan"
                     (dblclick)="addItem(i, j, k, l)"
                     (contextmenu)="toDelete($event, i, j, k, l)"
@@ -375,6 +391,7 @@
                     }
                   </td>
                   <td
+                    (wheel)="reArrange($event, i, j, k, l, 0)"
                     [attr.rowspan]="field?.actions?.[0]?.act || 1"
                     (dblclick)="addItem(i, j, k, l, 0)"
                     (contextmenu)="toDelete($event, i, j, k, l, 0)"
@@ -402,6 +419,7 @@
                 @if (!$first) {
                   <tr>
                     <td
+                      (wheel)="reArrange($event, i, j, k, l, m)"
                       (dblclick)="addItem(i, j, k, l, m)"
                       (contextmenu)="toDelete($event, i, j, k, l, m)"
                     >

@@ -541,4 +541,99 @@ export class Page1 {
 
     reader.readAsText(file);
   }
+
+  reArrange(
+    eve: WheelEvent,
+    i: number = -1,
+    j: number = -1,
+    k: number = -1,
+    l: number = -1,
+    m: number = -1,
+  ) {
+    eve.preventDefault();
+    const dir: boolean = eve.deltaY < 0;
+
+    const module: IModule | null = i > -1 ? this.tableRows[i] : null;
+    const submodule: IsubModule | null | undefined = j > -1 ? module?.submodules[j] : null;
+    const element: Ielement | null | undefined = k > -1 ? submodule?.elements[k] : null;
+    const field: Ifield | null | undefined = l > -1 ? element?.fields[l] : null;
+    const action: Iaction | null | undefined = m > -1 ? field?.actions[m] : null;
+
+    if (action) {
+      if (dir && m == 0) {
+        return;
+      }
+      if (!dir && m == Number(field?.actions?.length) - 1) {
+        return;
+      }
+    } else {
+      if (field) {
+        if (dir && l == 0) {
+          return;
+        }
+        if (!dir && l == Number(element?.fields?.length) - 1) {
+          return;
+        }
+      } else {
+        if (element) {
+          if (dir && k == 0) {
+            return;
+          }
+          if (!dir && k == Number(submodule?.elements?.length) - 1) {
+            return;
+          }
+        } else {
+          if (submodule) {
+            if (dir && j == 0) {
+              return;
+            }
+            if (!dir && j == Number(module?.submodules?.length) - 1) {
+              return;
+            }
+          } else {
+            if (module) {
+              if (dir && i == 0) {
+                return;
+              }
+              if (!dir && i == this.tableRows?.length - 1) {
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    const confMov: boolean = confirm(
+      `are you sure to move ${dir ? 'Up' : 'Down'} the ${
+        action?.act ||
+        field?.label ||
+        element?.type ||
+        submodule?.displayName ||
+        module?.displayName
+      }?`,
+    );
+
+    if (!confMov) return;
+
+    console.log(eve, i, j, k, l, m);
+
+    if (module) {
+      const targetIndex = dir ? i - 1 : i + 1;
+
+      const temp = this.tableRows[i];
+      this.tableRows[i] = this.tableRows[targetIndex];
+      this.tableRows[targetIndex] = temp;
+      if (submodule) {
+        const targetIndex = dir ? i - 1 : i + 1;
+
+        const temp = module.submodules[i];
+        // module.submodules[i] = module.submodules[targetIndex];
+        module.submodules[targetIndex] = temp;
+      }
+    }
+
+    this.setTable();
+    this.saveData();
+  }
 }
