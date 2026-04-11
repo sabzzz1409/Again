@@ -15,22 +15,89 @@
             "type": "closing form + table",
             "fields": [
               {
-                "label": "",
-                "key": "",
+                "label": "S.No",
+                "key": "sno",
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "view"
+                  },
+                  {
+                    "act": "type.number",
+                    "edit": false
+                  },
+                  {
+                    "act": "tr.dragAndDrop.reorder",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3,
+                "edit": false
+              },
+              {
+                "label": "User Image",
+                "key": "userImage",
+                "edit": false,
+                "actions": [
+                  {
+                    "act": "view",
+                    "edit": false
+                  },
+                  {
+                    "edit": false,
+                    "act": "type.file.[jpeg,png]"
+                  }
+                ],
+                "rowspan": 2
+              },
+              {
+                "label": "User Name",
+                "key": "userName",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "view"
+                  },
+                  {
+                    "act": "type.string",
+                    "edit": false
+                  },
+                  {
+                    "act": "dbclick.ed",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 3
+              },
+              {
+                "label": "Phone Number",
+                "key": "phoneNumber",
+                "edit": false,
                 "actions": [
                   {
                     "edit": false
                   }
                 ],
-                "rowspan": 1,
-                "edit": false
+                "rowspan": 1
+              },
+              {
+                "label": "Role",
+                "key": "role",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false
+                  }
+                ],
+                "rowspan": 1
               }
             ],
-            "rowspan": 1,
+            "rowspan": 10,
             "edit": false
           }
         ],
-        "rowspan": 1,
+        "rowspan": 10,
         "edit": false
       },
       {
@@ -47,10 +114,19 @@
                 "key": "sno",
                 "actions": [
                   {
+                    "act": "view",
                     "edit": false
+                  },
+                  {
+                    "act": "type.number",
+                    "edit": false
+                  },
+                  {
+                    "edit": false,
+                    "act": "tr.dragAndDrop.reorder"
                   }
                 ],
-                "rowspan": 1,
+                "rowspan": 3,
                 "edit": false
               },
               {
@@ -59,28 +135,62 @@
                 "edit": false,
                 "actions": [
                   {
+                    "act": "view",
+                    "edit": false
+                  },
+                  {
+                    "act": "type.string",
+                    "edit": false
+                  },
+                  {
+                    "edit": false,
+                    "act": "dbclick.editRole"
+                  },
+                  {
+                    "act": "rightClick.deleteRole",
                     "edit": false
                   }
                 ],
-                "rowspan": 1
+                "rowspan": 4
               },
               {
-                "label": "Actions",
-                "key": "action",
+                "label": "Created By",
+                "key": "created_by",
                 "edit": false,
                 "actions": [
                   {
+                    "edit": false,
+                    "act": "view"
+                  },
+                  {
+                    "act": "type.string",
                     "edit": false
                   }
                 ],
-                "rowspan": 1
+                "rowspan": 2
+              },
+              {
+                "label": "Created At",
+                "key": "created_at",
+                "edit": false,
+                "actions": [
+                  {
+                    "edit": false,
+                    "act": "view"
+                  },
+                  {
+                    "act": "type.dateTime",
+                    "edit": false
+                  }
+                ],
+                "rowspan": 2
               }
             ],
-            "rowspan": 3,
+            "rowspan": 11,
             "edit": false
           }
         ],
-        "rowspan": 3
+        "rowspan": 11
       },
       {
         "edit": false,
@@ -297,6 +407,7 @@
         "rowspan": 26
       }
     ],
-    "rowspan": 30
+    "rowspan": 47,
+    "id": 1
   }
 ]

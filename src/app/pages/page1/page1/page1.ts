@@ -466,6 +466,10 @@ export class Page1 {
         this.editData = module.route;
       }
     }
+
+    setTimeout(() => {
+      this.inputs?.last?.nativeElement?.focus();
+    });
   }
 
   public addIcon(i: number = -1, j: number = -1) {
@@ -485,6 +489,10 @@ export class Page1 {
         this.editData = module.iconName;
       }
     }
+
+    setTimeout(() => {
+      this.inputs?.last?.nativeElement?.focus();
+    });
   }
 
   public addKey(i: number = -1, j: number = -1, k: number = -1, l: number = -1) {
@@ -499,6 +507,10 @@ export class Page1 {
     field.edit = true;
     this.prevKey = 'key';
     this.editData = field.key;
+
+    setTimeout(() => {
+      this.inputs?.last?.nativeElement?.focus();
+    });
   }
 
   public toDelete(
